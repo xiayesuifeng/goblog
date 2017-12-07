@@ -40,7 +40,6 @@ func main() {
 			log.Fatal(err)
 		}
 
-		fmt.Printf("login password: %s\n",context.PostForm("password"))
 		context.JSON(http.StatusOK,config)
 	})
 
