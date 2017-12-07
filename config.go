@@ -6,17 +6,17 @@ import (
 )
 
 type Config struct {
-	Name string `json:"name"`
+	Name string `json:"name" form:"name"`
 	Db Database `json:"database"`
 }
 
 type Database struct {
-	Driver string `json:"driver"`
-	Address string `json:"address"`
-	Port string `json:"port"`
-	Dbname string `json:"dbname"`
-	Username string `json:"username"`
-	Password string `json:"password"`
+	Driver string `json:"driver" form:"driver"`
+	Address string `json:"address" form:"address"`
+	Port string `json:"port" form:"port"`
+	Dbname string `json:"dbname" form:"dbname"`
+	Username string `json:"username" form:"username"`
+	Password string `json:"password" form:"db_password"`
 }
 
 func ParseConf(config string) (Config,error) {

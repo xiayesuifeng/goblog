@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>安装</title>
+</head>
+<body>
+<form action="/install" method="post">
+    <label>
+        name:
+        <input type="text" name="name" value="goblog">
+    </label>
+    <label>
+        password:
+        <input type="text" name="password" value="admin">
+    </label>
+    <label>
+        driver:
+        <select name="driver">
+            <option value="mysql">mysql</option>
+        </select>
+    </label>
+    <label>
+        address:
+        <input type="text" name="address" value="127.0.0.1">
+    </label>
+    <label>
+        port:
+        <input type="text" name="port" value="3306">
+    </label>
+    <label>
+        dbname:
+        <input type="text" name="dbname" value="goblog">
+    </label>
+    <label>
+        username:
+        <input type="text" name="username" value="root">
+    </label>
+    <label>
+        password:
+        <input type="text" name="db_password">
+    </label>
+    <input type="submit" value="安装">
+</form>
+</body>
+</html>
