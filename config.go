@@ -30,3 +30,11 @@ func ParseConf(config string) (Config,error) {
 
 	return c,err
 }
+
+func WriteConf(config Config,outPath string) error{
+	out,err := os.OpenFile(outPath,os.O_RDWR | os.O_TRUNC,0)
+	if err!= nil {
+		return err
+	}
+	return json.NewEncoder(out).Encode(config)
+}
