@@ -21,11 +21,23 @@ func main() {
 
 	api := route.Group("api")
 
-	api.GET("/name/:name", func(context *gin.Context) {
+	api.GET("/tag/:tag", func(context *gin.Context) {
 
 	})
 
-	api.GET("/tag/:tag", func(context *gin.Context) {
+	api.GET("/article/:name", func(context *gin.Context) {
+
+	})
+
+	api.POST("/article/new", func(context *gin.Context) {
+
+	})
+
+	api.POST("/article/del", func(context *gin.Context) {
+
+	})
+
+	api.PUT("/article/edit", func(context *gin.Context) {
 
 	})
 
