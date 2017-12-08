@@ -1,6 +1,6 @@
 {
-  "name": "goBlog",
-  "password" : "admin",
+  "name": "goblog",
+  "password": "c3284d0f94606de1fd2af172aba15bf3",
   "database": {
     "driver": "mysql",
     "address": "127.0.0.1",
