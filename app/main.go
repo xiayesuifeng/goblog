@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"github.com/1377195627/goblog"
 	"log"
+	"os"
 )
 
 var config goblog.Config
@@ -58,6 +59,14 @@ func main() {
 
 		context.String(http.StatusOK,"安装完成" )
 
+	})
+
+	route.GET("/", func(context *gin.Context) {
+		if _,err = os.Stat("goblog.lock"); err != nil {
+			if os.IsNotExist(err) {
+				context.Redirect(http.StatusMovedPermanently,"/install")
+			}
+		}
 	})
 
 	route.Run()

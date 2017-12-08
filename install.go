@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"crypto/md5"
 	"os"
+	"io/ioutil"
 )
 
 func Install(config Config) error {
@@ -46,5 +47,10 @@ func Install(config Config) error {
 	passwd = fmt.Sprintf("%x",md5.Sum([]byte(passwd)))
 	config.Password = passwd
 
-	return WriteConf(config,"config.json")
+	err = WriteConf(config,"config.json")
+	if err != nil {
+		return err
+	}
+
+	return ioutil.WriteFile("goblog.lock",[]byte("lock"),0755)
 }
