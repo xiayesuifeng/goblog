@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"github.com/1377195627/goblog"
 	"log"
-	"fmt"
 )
 
 var config goblog.Config
@@ -40,7 +39,13 @@ func main() {
 			log.Fatal(err)
 		}
 
-		context.JSON(http.StatusOK,config)
+		if err=goblog.Install(config);err!=nil{
+			log.Fatal(err)
+			context.String(http.StatusOK,"安装失败" )
+		}
+
+		context.String(http.StatusOK,"安装完成" )
+
 	})
 
 	route.Run()

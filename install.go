@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"fmt"
+	"crypto/md5"
 )
 
 func Install(config Config) error {
@@ -29,5 +30,9 @@ func Install(config Config) error {
 		return err
 	}
 
-	return nil
+	passwd := fmt.Sprintf("%x",md5.Sum([]byte(config.Password)))
+	passwd = fmt.Sprintf("%x",md5.Sum([]byte(passwd)))
+	config.Password = passwd
+
+	return WriteConf(config,"config.json")
 }
