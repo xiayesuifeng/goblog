@@ -22,7 +22,7 @@ func Install(config Config) error {
 
 	_,err=db.Exec(`CREATE TABLE article(
 		name VARCHAR(20) NOT NULL,
-		uuid VARCHAR(20) NOT NULL,
+		uuid VARCHAR(40) NOT NULL,
 		tag CHAR(10) NOT NULL,
 		create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 		edit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
