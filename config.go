@@ -5,6 +5,8 @@ import (
 	"os"
 )
 
+var Conf *Config
+
 type Config struct {
 	Name string `json:"name" form:"name"`
 	Password string `json:"password" form:"password"`
@@ -20,22 +22,23 @@ type Database struct {
 	Password string `json:"password" form:"db_password"`
 }
 
-func ParseConf(config string) (Config,error) {
+func ParseConf(config string) error {
 	var c Config
 
 	conf,err := os.Open(config)
 	if err!= nil {
-		return c,err
+		return err
 	}
 	err = json.NewDecoder(conf).Decode(&c)
 
-	return c,err
+	Conf = &c
+	return err
 }
 
-func WriteConf(config Config,outPath string) error{
+func WriteConf(outPath string) error{
 	out,err := os.OpenFile(outPath,os.O_RDWR | os.O_TRUNC,0)
 	if err!= nil {
 		return err
 	}
-	return json.NewEncoder(out).Encode(config)
+	return json.NewEncoder(out).Encode(Conf)
 }

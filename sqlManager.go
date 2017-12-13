@@ -4,14 +4,24 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"fmt"
+	"os"
 )
 
 var DB *sql.DB
 
-func InitSql(config Config) error{
-	sqlserver := fmt.Sprintf("%s:%s@tcp(%s:%s)/",config.Db.Username,config.Db.Password,config.Db.Address,config.Db.Port)
+func InitSql() error{
+	conf := Conf
+	var sqlserver string
+	if _, err := os.Stat("goblog.lock"); err != nil {
+		if os.IsNotExist(err) {
+			sqlserver = fmt.Sprintf("%s:%s@tcp(%s:%s)/",conf.Db.Username,conf.Db.Password,conf.Db.Address,conf.Db.Port)
+		}
+	}else{
+		sqlserver = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",conf.Db.Username,conf.Db.Password,conf.Db.Address,conf.Db.Port,conf.Db.Dbname)
+
+	}
 	var err error
-	DB,err = sql.Open(config.Db.Driver,sqlserver)
+	DB,err = sql.Open(conf.Db.Driver,sqlserver)
 	if err!= nil {
 		return err
 	}

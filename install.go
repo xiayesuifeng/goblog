@@ -7,10 +7,10 @@ import (
 	"io/ioutil"
 )
 
-func Install(config Config) error {
-	fmt.Println(DB.Exec("CREATE DATABASE "+config.Db.Dbname))
+func Install() error {
+	DB.Exec("CREATE DATABASE "+Conf.Db.Dbname)
 
-	DB.Exec("use "+config.Db.Dbname)
+	DB.Exec("use "+Conf.Db.Dbname)
 
 	_,err:=DB.Exec(`CREATE TABLE article(
 		name VARCHAR(20) NOT NULL,
@@ -35,11 +35,11 @@ func Install(config Config) error {
 		return err
 	}
 
-	passwd := fmt.Sprintf("%x",md5.Sum([]byte(config.Password)))
+	passwd := fmt.Sprintf("%x",md5.Sum([]byte(Conf.Password)))
 	passwd = fmt.Sprintf("%x",md5.Sum([]byte(passwd)))
-	config.Password = passwd
+	Conf.Password = passwd
 
-	err = WriteConf(config,"config.json")
+	err = WriteConf("config.json")
 	if err != nil {
 		return err
 	}

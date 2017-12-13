@@ -12,7 +12,8 @@ type TokenManager struct {
 }
 
 func GetManager() *TokenManager {
-	sync.Once{}.Do(func() {
+	var once sync.Once
+	once.Do(func() {
 		tokenManager=&TokenManager{}
 	})
 	return tokenManager
