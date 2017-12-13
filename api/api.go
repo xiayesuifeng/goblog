@@ -108,7 +108,24 @@ func TagBytag(context *gin.Context) {
 }
 
 func ArticleByName(context *gin.Context) {
+	name := context.Param("name")
 
+	rows, err := goblog.DB.Query("SELECT * FROM article WHERE name=?", name)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var articles []goblog.Article
+
+	for rows.Next() {
+		var article goblog.Article
+		rows.Scan(&article.Name, &article.Uuid, &article.Tag, &article.CreateTime, &article.EditTime)
+		articles = append(articles, article)
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"articles": articles,
+	})
 }
 
 func ArticleByUuid(context *gin.Context) {
