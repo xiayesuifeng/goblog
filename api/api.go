@@ -14,6 +14,7 @@ import (
 )
 
 type articleData struct {
+	OldName string `json:"oldName" form:"oldName"`
 	Name string `json:"name" form:"name"`
 	Tag string `json:"tag" form:"name"`
 	Context string `json:"context" form:"context"`
@@ -180,7 +181,7 @@ func ArticleEdit(context *gin.Context) {
 	}
 	var data articleData
 	context.Bind(data)
-	if err:=goblog.UpdateArticle(data.Name,data.Tag,data.Context);err!= nil{
+	if err:=goblog.UpdateArticle(data.OldName,data.Name,data.Tag,data.Context);err!= nil{
 		context.JSON(http.StatusOK,gin.H{
 			"status":err,
 		})

@@ -4,6 +4,7 @@ import (
 	"github.com/satori/go.uuid"
 	"io/ioutil"
 	"os"
+	"time"
 )
 
 type Article struct {
@@ -24,8 +25,24 @@ func AddArticle(name string,tag string,context string) error {
 	return ioutil.WriteFile("article/"+md_uuid+".md",[]byte(context),0644)
 }
 
-func UpdateArticle(name string,tag string,context string) error{
-	return nil
+func UpdateArticle(oldName,newName,tag,context string) error{
+	row:=DB.QueryRow("SELECT uuid FROM article WHERE name=?",oldName)
+	var u string
+	row.Scan(&u)
+
+	out,err := os.OpenFile("article/"+u+".md",os.O_RDWR | os.O_TRUNC,0)
+	if err!= nil {
+		return err
+	}
+	defer out.Close()
+	_,err=out.WriteString(context)
+	if err != nil {
+		return err
+	}
+
+	lastTime := time.Now().Format("2006-01-02 15:04:05")
+	_,err=DB.Exec("UPDATE article SET name=?,tag=?,edit_time=? WHERE name=?",newName,tag,lastTime,oldName)
+	return err
 }
 
 func DelArticle(name string) error{
