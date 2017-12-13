@@ -1,8 +1,6 @@
 package goblog
 
 import (
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
 	"fmt"
 	"crypto/md5"
 	"os"
@@ -10,17 +8,11 @@ import (
 )
 
 func Install(config Config) error {
-	sqlserver := fmt.Sprintf("%s:%s@tcp(%s:%s)/",config.Db.Username,config.Db.Password,config.Db.Address,config.Db.Port)
-	db,err := sql.Open(config.Db.Driver,sqlserver)
-	if err!= nil {
-		return err
-	}
+	fmt.Println(DB.Exec("CREATE DATABASE "+config.Db.Dbname))
 
-	fmt.Println(db.Exec("CREATE DATABASE "+config.Db.Dbname))
+	DB.Exec("use "+config.Db.Dbname)
 
-	db.Exec("use "+config.Db.Dbname)
-
-	_,err=db.Exec(`CREATE TABLE article(
+	_,err:=DB.Exec(`CREATE TABLE article(
 		name VARCHAR(20) NOT NULL,
 		uuid VARCHAR(40) NOT NULL,
 		tag CHAR(10) NOT NULL,
@@ -38,7 +30,7 @@ func Install(config Config) error {
 		return err
 	}
 
-	err = AddArticle("世界，您好！","test","欢迎使用goblog。这是您的第一篇文章。编辑或删除它，然后开始写作吧！",config)
+	err = AddArticle("世界，您好！","test","欢迎使用goblog。这是您的第一篇文章。编辑或删除它，然后开始写作吧！")
 	if err!= nil {
 		return err
 	}
