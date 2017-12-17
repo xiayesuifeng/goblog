@@ -12,6 +12,7 @@ func main() {
 
 	route := gin.Default()
 	route.LoadHTMLGlob("view/*")
+	route.Static("/images","static/images")
 
 	apiRoter := route.Group("api")
 	apiRoter.POST("/login", api.Login)
