@@ -135,10 +135,13 @@ func ArticleByUuid(context *gin.Context) {
 		log.Fatal(err)
 		context.String(http.StatusNotFound, "")
 	}
-	html := blackfriday.MarkdownBasic(md)
-	if mode == "complete" {
+	if mode == "raw" {
+		context.String(http.StatusOK, string(md))
+	}else if mode == "complete" {
+		html := blackfriday.MarkdownBasic(md)
 		context.String(http.StatusOK, string(html))
-	} else {
+	}else{
+		html := blackfriday.MarkdownBasic(md)
 		if len(html) > 100 {
 			context.String(http.StatusOK, string(html[:99]))
 		} else {
