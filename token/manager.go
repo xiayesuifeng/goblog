@@ -5,23 +5,25 @@ import (
 	"sync"
 )
 
-var tokenManager *TokenManager
+var (
+	tokenManager *TokenManager
+	once         sync.Once
+)
 
 type TokenManager struct {
 	tokens []Token
 }
 
 func GetManager() *TokenManager {
-	var once sync.Once
 	once.Do(func() {
-		tokenManager=&TokenManager{}
+		tokenManager = &TokenManager{}
 	})
 	return tokenManager
 }
 
-func (t *TokenManager)GetToken() Token{
-	token:= NewToken(1440 * time.Second)
-	t.tokens = append(t.tokens,token)
+func (t *TokenManager) GetToken() Token {
+	token := NewToken(1440 * time.Second)
+	t.tokens = append(t.tokens, token)
 	timer :=time.NewTimer(1440 * time.Second)
 	go func() {
 		<- timer.C
@@ -30,18 +32,18 @@ func (t *TokenManager)GetToken() Token{
 	return token
 }
 
-func (t *TokenManager)DelToken(token Token){
-	tokens := make([]Token,len(t.tokens)-1)
+func (t *TokenManager) DelToken(token Token) {
+	tokens := make([]Token, len(t.tokens)-1)
 	for i := 0; i < len(tokens); i++ {
-		if  t.tokens[i].Token!=token.Token{
-			tokens=append(tokens,token)
+		if t.tokens[i].Token != token.Token {
+			tokens = append(tokens, token)
 		}
 	}
 }
 
-func (t *TokenManager)IsExist(token string) bool {
+func (t *TokenManager) IsExist(token string) bool {
 	for i := 0; i < len(t.tokens); i++ {
-		if  t.tokens[i].Token==token{
+		if t.tokens[i].Token == token {
 			return true
 		}
 	}

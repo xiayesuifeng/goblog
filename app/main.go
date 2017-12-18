@@ -12,7 +12,7 @@ func main() {
 
 	route := gin.Default()
 	route.LoadHTMLGlob("view/*")
-	route.Static("/images","static/images")
+	route.Static("/images", "static/images")
 
 	apiRoter := route.Group("api")
 	apiRoter.POST("/login", api.Login)
@@ -31,7 +31,7 @@ func main() {
 	route.Run()
 }
 
-func Init(){
+func Init() {
 	err := goblog.ParseConf("config.json")
 	if err != nil {
 		log.Fatal(err)
