@@ -16,7 +16,7 @@ import (
 type articleData struct {
 	OldName string `json:"oldName" form:"oldName"`
 	Name string `json:"name" form:"name"`
-	Tag string `json:"tag" form:"name"`
+	Tag string `json:"tag" form:"tag"`
 	Context string `json:"context" form:"context"`
 }
 
@@ -156,7 +156,7 @@ func ArticleNew(context *gin.Context) {
 		return
 	}
 	var data articleData
-	context.Bind(data)
+	context.Bind(&data)
 	if err:=goblog.AddArticle(data.Name,data.Tag,data.Context);err!= nil{
 		context.JSON(http.StatusOK,gin.H{
 			"status":err,
@@ -197,7 +197,7 @@ func ArticleEdit(context *gin.Context) {
 		return
 	}
 	var data articleData
-	context.Bind(data)
+	context.Bind(&data)
 	if err:=goblog.UpdateArticle(data.OldName,data.Name,data.Tag,data.Context);err!= nil{
 		context.JSON(http.StatusOK,gin.H{
 			"status":err,
