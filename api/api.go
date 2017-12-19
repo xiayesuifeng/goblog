@@ -15,8 +15,8 @@ import (
 
 type articleData struct {
 	OldName string `json:"oldName" form:"oldName"`
-	Name string `json:"name" form:"name"`
-	Tag string `json:"tag" form:"tag"`
+	Name    string `json:"name" form:"name"`
+	Tag     string `json:"tag" form:"tag"`
 	Context string `json:"context" form:"context"`
 }
 
@@ -32,7 +32,7 @@ func Login(context *gin.Context) {
 		})
 	} else {
 
-		t:=token.GetManager().GetToken()
+		t := token.GetManager().GetToken()
 
 		context.JSON(http.StatusOK, gin.H{
 			"token": t.Token,
@@ -110,21 +110,20 @@ func TagBytag(context *gin.Context) {
 func ArticleByName(context *gin.Context) {
 	name := context.Param("name")
 
-	rows, err := goblog.DB.Query("SELECT * FROM article WHERE name=?", name)
+	row := goblog.DB.QueryRow("SELECT * FROM article WHERE name=?", name)
+
+	var article goblog.Article
+	err := row.Scan(&article.Name, &article.Uuid, &article.Tag, &article.CreateTime, &article.EditTime)
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	var articles []goblog.Article
-
-	for rows.Next() {
-		var article goblog.Article
-		rows.Scan(&article.Name, &article.Uuid, &article.Tag, &article.CreateTime, &article.EditTime)
-		articles = append(articles, article)
+		context.JSON(http.StatusOK, gin.H{
+			"article": article,
+			"status":  err,
+		})
 	}
 
 	context.JSON(http.StatusOK, gin.H{
-		"articles": articles,
+		"article": article,
+		"status":  "success",
 	})
 }
 
@@ -137,10 +136,10 @@ func ArticleByUuid(context *gin.Context) {
 	}
 	if mode == "raw" {
 		context.String(http.StatusOK, string(md))
-	}else if mode == "complete" {
+	} else if mode == "complete" {
 		html := blackfriday.MarkdownBasic(md)
 		context.String(http.StatusOK, string(html))
-	}else{
+	} else {
 		html := blackfriday.MarkdownBasic(md)
 		if len(html) > 100 {
 			context.String(http.StatusOK, string(html[:99]))
@@ -151,63 +150,63 @@ func ArticleByUuid(context *gin.Context) {
 }
 
 func ArticleNew(context *gin.Context) {
-	t:=context.PostForm("token")
+	t := context.PostForm("token")
 	if !token.GetManager().IsExist(t) {
-		context.JSON(http.StatusOK,gin.H{
-			"status":"no authorized",
+		context.JSON(http.StatusOK, gin.H{
+			"status": "no authorized",
 		})
 		return
 	}
 	var data articleData
 	context.Bind(&data)
-	if err:=goblog.AddArticle(data.Name,data.Tag,data.Context);err!= nil{
-		context.JSON(http.StatusOK,gin.H{
-			"status":err,
+	if err := goblog.AddArticle(data.Name, data.Tag, data.Context); err != nil {
+		context.JSON(http.StatusOK, gin.H{
+			"status": err,
 		})
-	}else{
-		context.JSON(http.StatusOK,gin.H{
-			"status":"success",
+	} else {
+		context.JSON(http.StatusOK, gin.H{
+			"status": "success",
 		})
 	}
 }
 
 func ArticleDel(context *gin.Context) {
-	t:=context.PostForm("token")
+	t := context.PostForm("token")
 	if !token.GetManager().IsExist(t) {
-		context.JSON(http.StatusOK,gin.H{
-			"status":"no authorized",
+		context.JSON(http.StatusOK, gin.H{
+			"status": "no authorized",
 		})
 		return
 	}
-	name:=context.DefaultPostForm("name","")
-	if err:=goblog.DelArticle(name);err!= nil {
-		context.JSON(http.StatusOK,gin.H{
-			"status":err,
+	name := context.DefaultPostForm("name", "")
+	if err := goblog.DelArticle(name); err != nil {
+		context.JSON(http.StatusOK, gin.H{
+			"status": err,
 		})
-	}else{
-		context.JSON(http.StatusOK,gin.H{
-			"status":"success",
+	} else {
+		context.JSON(http.StatusOK, gin.H{
+			"status": "success",
 		})
 	}
 }
 
 func ArticleEdit(context *gin.Context) {
-	t:=context.PostForm("token")
+	t := context.PostForm("token")
 	if !token.GetManager().IsExist(t) {
-		context.JSON(http.StatusOK,gin.H{
-			"status":"no authorized",
+		context.JSON(http.StatusOK, gin.H{
+			"status": "no authorized",
 		})
 		return
 	}
 	var data articleData
 	context.Bind(&data)
-	if err:=goblog.UpdateArticle(data.OldName,data.Name,data.Tag,data.Context);err!= nil{
-		context.JSON(http.StatusOK,gin.H{
-			"status":err,
+	if err := goblog.UpdateArticle(data.OldName, data.Name, data.Tag, data.Context); err != nil {
+		context.JSON(http.StatusOK, gin.H{
+			"status": err,
 		})
-	}else{
-		context.JSON(http.StatusOK,gin.H{
-			"status":"success",
+	} else {
+		context.JSON(http.StatusOK, gin.H{
+			"status": "success",
 		})
 	}
 }
