@@ -13,13 +13,16 @@ func Install() error {
 	DB.Exec("use "+Conf.Db.Dbname)
 
 	_,err:=DB.Exec(`CREATE TABLE article(
-		id INT AUTO_INCREMENT PRIMARY KEY
+		id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(20) NOT NULL,
 		uuid VARCHAR(40) NOT NULL,
 		tag CHAR(10) NOT NULL,
 		create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 		edit_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )`)
+	if err != nil {
+		return err
+	}
 
 	if _,err = os.Stat("article"); err != nil {
 		if os.IsNotExist(err) {
