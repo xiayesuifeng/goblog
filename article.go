@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"time"
+	"errors"
 )
 
 type Article struct {
@@ -16,8 +17,15 @@ type Article struct {
 }
 
 func AddArticle(name string,tag string,context string) error {
+	row:=DB.QueryRow("SELECT id FROM article WHERE name=?",name)
+	var id int
+	err:=row.Scan(&id)
+	if err==nil {
+		return errors.New("name exist")
+	}
+
 	md_uuid := uuid.NewV1().String()
-	_,err := DB.Exec(`INSERT INTO article (name,uuid,tag) VALUES (?,?,?)`,name,md_uuid,tag)
+	_,err = DB.Exec(`INSERT INTO article (name,uuid,tag) VALUES (?,?,?)`,name,md_uuid,tag)
 	if err!= nil {
 		return err
 	}
