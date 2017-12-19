@@ -13,6 +13,7 @@ func Install() error {
 	DB.Exec("use "+Conf.Db.Dbname)
 
 	_,err:=DB.Exec(`CREATE TABLE article(
+		id INT AUTO_INCREMENT PRIMARY KEY
 		name VARCHAR(20) NOT NULL,
 		uuid VARCHAR(40) NOT NULL,
 		tag CHAR(10) NOT NULL,
