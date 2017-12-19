@@ -72,7 +72,7 @@ func Tag(context *gin.Context) {
 
 	for rows.Next() {
 		var article goblog.Article
-		var createTime, editTIme string;
+		var createTime, editTIme string
 		rows.Scan(&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
 		t, _ := time.Parse("2006-01-02 15:04:05", createTime)
 		article.CreateTime = t.Unix()
@@ -98,7 +98,12 @@ func TagBytag(context *gin.Context) {
 
 	for rows.Next() {
 		var article goblog.Article
-		rows.Scan(&article.Name, &article.Uuid, &article.Tag, &article.CreateTime, &article.EditTime)
+		var createTime, editTIme string
+		rows.Scan(&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
+		t, _ := time.Parse("2006-01-02 15:04:05", createTime)
+		article.CreateTime = t.Unix()
+		t, _ = time.Parse("2006-01-02 15:04:05", editTIme)
+		article.EditTime = t.Unix()
 		articles = append(articles, article)
 	}
 
@@ -113,12 +118,18 @@ func ArticleByName(context *gin.Context) {
 	row := goblog.DB.QueryRow("SELECT name,uuid,tag,create_time,edit_time FROM article WHERE name=?", name)
 
 	var article goblog.Article
-	err := row.Scan(&article.Name, &article.Uuid, &article.Tag, &article.CreateTime, &article.EditTime)
+	var createTime, editTIme string
+	err := row.Scan(&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
+	t, _ := time.Parse("2006-01-02 15:04:05", createTime)
+	article.CreateTime = t.Unix()
+	t, _ = time.Parse("2006-01-02 15:04:05", editTIme)
+	article.EditTime = t.Unix()
 	if err != nil {
 		context.JSON(http.StatusOK, gin.H{
 			"article": article,
 			"status":  err,
 		})
+		return
 	}
 
 	context.JSON(http.StatusOK, gin.H{
@@ -172,14 +183,14 @@ func ArticleNew(context *gin.Context) {
 }
 
 func ArticleDel(context *gin.Context) {
-	t := context.PostForm("token")
+	t := context.Query("token")
 	if !token.GetManager().IsExist(t) {
 		context.JSON(http.StatusOK, gin.H{
 			"status": "no authorized",
 		})
 		return
 	}
-	name := context.DefaultPostForm("name", "")
+	name := context.Param("name")
 	if err := goblog.DelArticle(name); err != nil {
 		context.JSON(http.StatusOK, gin.H{
 			"status": err,
@@ -201,6 +212,7 @@ func ArticleEdit(context *gin.Context) {
 	}
 	var data articleData
 	context.Bind(&data)
+	fmt.Println(data)
 	if err := goblog.UpdateArticle(data.OldName, data.Name, data.Tag, data.Context); err != nil {
 		context.JSON(http.StatusOK, gin.H{
 			"status": err,

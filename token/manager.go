@@ -39,6 +39,7 @@ func (t *TokenManager) DelToken(token Token) {
 			tokens = append(tokens, token)
 		}
 	}
+	t.tokens=tokens
 }
 
 func (t *TokenManager) IsExist(token string) bool {

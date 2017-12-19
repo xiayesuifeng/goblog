@@ -22,8 +22,8 @@ func main() {
 	apiRoter.GET("/article/name/:name", api.ArticleByName)
 	apiRoter.GET("/article/uuid/:uuid", api.ArticleByUuid)
 	apiRoter.POST("/article/new", api.ArticleNew)
-	apiRoter.DELETE("/article/del", api.ArticleDel)
 	apiRoter.PUT("/article/edit", api.ArticleEdit)
+	apiRoter.DELETE("/article/del/:name", api.ArticleDel)
 
 	route.GET("/install", goblog.InstallRouter)
 	route.POST("/install", goblog.InstallRouter)
