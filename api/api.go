@@ -62,7 +62,7 @@ func Tags(context *gin.Context) {
 }
 
 func Tag(context *gin.Context) {
-	rows, err := goblog.DB.Query("SELECT * FROM article")
+	rows, err := goblog.DB.Query("SELECT name,uuid,tag,create_time,edit_time FROM article")
 
 	if err != nil {
 		log.Fatal(err)
@@ -89,7 +89,7 @@ func Tag(context *gin.Context) {
 func TagBytag(context *gin.Context) {
 	tag := context.Param("tag")
 
-	rows, err := goblog.DB.Query("SELECT * FROM article WHERE tag=?", tag)
+	rows, err := goblog.DB.Query("SELECT name,uuid,tag,create_time,edit_time FROM article WHERE tag=?", tag)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -110,7 +110,7 @@ func TagBytag(context *gin.Context) {
 func ArticleByName(context *gin.Context) {
 	name := context.Param("name")
 
-	row := goblog.DB.QueryRow("SELECT * FROM article WHERE name=?", name)
+	row := goblog.DB.QueryRow("SELECT name,uuid,tag,create_time,edit_time FROM article WHERE name=?", name)
 
 	var article goblog.Article
 	err := row.Scan(&article.Name, &article.Uuid, &article.Tag, &article.CreateTime, &article.EditTime)
@@ -134,6 +134,7 @@ func ArticleByUuid(context *gin.Context) {
 		log.Fatal(err)
 		context.String(http.StatusNotFound, "")
 	}
+
 	if mode == "raw" {
 		context.String(http.StatusOK, string(md))
 	} else if mode == "complete" {
