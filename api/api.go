@@ -43,7 +43,7 @@ func Login(context *gin.Context) {
 }
 
 func Tags(context *gin.Context) {
-	rows, err := goblog.DB.Query("SELECT tag FROM article")
+	rows, err := goblog.DB.Query("SELECT DISTINCT tag FROM article")
 	if err != nil {
 		log.Fatal(err)
 	}
