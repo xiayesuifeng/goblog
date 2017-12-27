@@ -11,7 +11,7 @@ func main() {
 	Init()
 
 	router := gin.Default()
-	router.LoadHTMLGlob("view/*")
+	//router.LoadHTMLGlob("view/*")
 	router.Static("/images", "static/images")
 
 	apiRoter := router.Group("api")
