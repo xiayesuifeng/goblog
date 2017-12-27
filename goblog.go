@@ -8,10 +8,10 @@ import (
 )
 
 func InstallRouter(context *gin.Context) {
-	if context.Request.Method==http.MethodGet {
-		context.HTML(http.StatusOK, "install.html", gin.H{})
-		return
-	}
+	//if context.Request.Method==http.MethodGet {
+	//	context.HTML(http.StatusOK, "install.html", gin.H{})
+	//	return
+	//}
 	err := context.Bind(Conf)
 	if err != nil {
 		log.Fatal(err)
@@ -29,7 +29,10 @@ func InstallRouter(context *gin.Context) {
 func HomeRouter(context *gin.Context){
 	if _, err := os.Stat("goblog.lock"); err != nil {
 		if os.IsNotExist(err) {
-			context.Redirect(http.StatusMovedPermanently, "/install")
+			//context.Redirect(http.StatusMovedPermanently, "/install")
+			context.String(http.StatusOK,"博客未安装")
+			return
 		}
 	}
+	context.String(http.StatusOK,"GoBlog")
 }

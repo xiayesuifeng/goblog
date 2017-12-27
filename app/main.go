@@ -10,11 +10,12 @@ import (
 func main() {
 	Init()
 
-	route := gin.Default()
-	route.LoadHTMLGlob("view/*")
-	route.Static("/images", "static/images")
+	router := gin.Default()
+	router.LoadHTMLGlob("view/*")
+	router.Static("/images", "static/images")
 
-	apiRoter := route.Group("api")
+	apiRoter := router.Group("api")
+	apiRoter.POST("/install",goblog.InstallRouter)
 	apiRoter.POST("/login", api.Login)
 	apiRoter.GET("/tags", api.Tags)
 	apiRoter.GET("/tag", api.Tag)
@@ -25,10 +26,10 @@ func main() {
 	apiRoter.PUT("/article/edit", api.ArticleEdit)
 	apiRoter.DELETE("/article/del/:name", api.ArticleDel)
 
-	route.GET("/install", goblog.InstallRouter)
-	route.POST("/install", goblog.InstallRouter)
-	route.GET("/", goblog.HomeRouter)
-	route.Run()
+	//router.GET("/install", goblog.InstallRouter)
+	//router.POST("/install", goblog.InstallRouter)
+	router.GET("/", goblog.HomeRouter)
+	router.Run()
 }
 
 func Init() {
