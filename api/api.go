@@ -62,7 +62,7 @@ func Tags(context *gin.Context) {
 }
 
 func Tag(context *gin.Context) {
-	rows, err := goblog.DB.Query("SELECT name,uuid,tag,create_time,edit_time FROM article")
+	rows, err := goblog.DB.Query("SELECT id,name,uuid,tag,create_time,edit_time FROM article")
 
 	if err != nil {
 		log.Fatal(err)
@@ -73,7 +73,7 @@ func Tag(context *gin.Context) {
 	for rows.Next() {
 		var article goblog.Article
 		var createTime, editTIme string
-		rows.Scan(&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
+		rows.Scan(&article.Id,&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
 		t, _ := time.Parse("2006-01-02 15:04:05", createTime)
 		article.CreateTime = t.Unix()
 		t, _ = time.Parse("2006-01-02 15:04:05", editTIme)
@@ -89,7 +89,7 @@ func Tag(context *gin.Context) {
 func TagBytag(context *gin.Context) {
 	tag := context.Param("tag")
 
-	rows, err := goblog.DB.Query("SELECT name,uuid,tag,create_time,edit_time FROM article WHERE tag=?", tag)
+	rows, err := goblog.DB.Query("SELECT id,name,uuid,tag,create_time,edit_time FROM article WHERE tag=?", tag)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -99,7 +99,7 @@ func TagBytag(context *gin.Context) {
 	for rows.Next() {
 		var article goblog.Article
 		var createTime, editTIme string
-		rows.Scan(&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
+		rows.Scan(&article.Id,&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
 		t, _ := time.Parse("2006-01-02 15:04:05", createTime)
 		article.CreateTime = t.Unix()
 		t, _ = time.Parse("2006-01-02 15:04:05", editTIme)
@@ -115,11 +115,11 @@ func TagBytag(context *gin.Context) {
 func ArticleByName(context *gin.Context) {
 	name := context.Param("name")
 
-	row := goblog.DB.QueryRow("SELECT name,uuid,tag,create_time,edit_time FROM article WHERE name=?", name)
+	row := goblog.DB.QueryRow("SELECT id,name,uuid,tag,create_time,edit_time FROM article WHERE name=?", name)
 
 	var article goblog.Article
 	var createTime, editTIme string
-	err := row.Scan(&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
+	err := row.Scan(&article.Id,&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
 	t, _ := time.Parse("2006-01-02 15:04:05", createTime)
 	article.CreateTime = t.Unix()
 	t, _ = time.Parse("2006-01-02 15:04:05", editTIme)

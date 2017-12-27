@@ -9,6 +9,7 @@ import (
 )
 
 type Article struct {
+	Id string
 	Name string
 	Uuid string
 	Tag string
