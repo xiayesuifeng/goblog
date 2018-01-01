@@ -16,6 +16,7 @@ func main() {
 
 	apiRoter := router.Group("api")
 	apiRoter.POST("/install",goblog.InstallRouter)
+	apiRoter.GET("/name",api.Name)
 	apiRoter.POST("/login", api.Login)
 	apiRoter.GET("/tags", api.Tags)
 	apiRoter.GET("/tag", api.Tag)

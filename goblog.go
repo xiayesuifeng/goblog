@@ -12,6 +12,7 @@ func InstallRouter(context *gin.Context) {
 	//	context.HTML(http.StatusOK, "install.html", gin.H{})
 	//	return
 	//}
+
 	err := context.Bind(Conf)
 	if err != nil {
 		log.Fatal(err)
