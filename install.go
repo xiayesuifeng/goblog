@@ -10,7 +10,8 @@ import (
 
 func Install() error {
 	sqlserver := fmt.Sprintf("%s:%s@tcp(%s:%s)/",Conf.Db.Username,Conf.Db.Password,Conf.Db.Address,Conf.Db.Port)
-	DB,err := sql.Open(Conf.Db.Driver,sqlserver)
+	var err error
+	DB,err = sql.Open(Conf.Db.Driver,sqlserver)
 	if err != nil {
 		return err
 	}
