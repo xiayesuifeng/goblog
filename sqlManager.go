@@ -14,12 +14,10 @@ func InitSql() error{
 	var sqlserver string
 	if _, err := os.Stat("goblog.lock"); err != nil {
 		if os.IsNotExist(err) {
-			sqlserver = fmt.Sprintf("%s:%s@tcp(%s:%s)/",conf.Db.Username,conf.Db.Password,conf.Db.Address,conf.Db.Port)
+			return nil
 		}
-	}else{
-		sqlserver = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",conf.Db.Username,conf.Db.Password,conf.Db.Address,conf.Db.Port,conf.Db.Dbname)
-
 	}
+	sqlserver = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",conf.Db.Username,conf.Db.Password,conf.Db.Address,conf.Db.Port,conf.Db.Dbname)
 	var err error
 	DB,err = sql.Open(conf.Db.Driver,sqlserver)
 	if err!= nil {

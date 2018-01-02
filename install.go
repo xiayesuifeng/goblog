@@ -5,14 +5,21 @@ import (
 	"crypto/md5"
 	"os"
 	"io/ioutil"
+	"database/sql"
 )
 
 func Install() error {
+	sqlserver := fmt.Sprintf("%s:%s@tcp(%s:%s)/",Conf.Db.Username,Conf.Db.Password,Conf.Db.Address,Conf.Db.Port)
+	DB,err := sql.Open(Conf.Db.Driver,sqlserver)
+	if err != nil {
+		return err
+	}
+
 	DB.Exec("CREATE DATABASE "+Conf.Db.Dbname)
 
 	DB.Exec("use "+Conf.Db.Dbname)
 
-	_,err:=DB.Exec(`CREATE TABLE article(
+	_,err=DB.Exec(`CREATE TABLE article(
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(20) NOT NULL,
 		uuid VARCHAR(40) NOT NULL,
