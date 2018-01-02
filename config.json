@@ -1,1 +1,1 @@
-{"name":"goblog","password":"c3284d0f94606de1fd2af172aba15bf3","database":{"driver":"mysql","address":"127.0.0.1","port":"3306","dbname":"goblog","username":"root","password":"123"}}
+{"name":"goblog","password":"c3284d0f94606de1fd2af172aba15bf3","database":{"driver":"mysql","address":"127.0.0.1","port":"3306","dbname":"itcast","username":"root","password":"123"}}

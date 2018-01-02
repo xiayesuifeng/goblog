@@ -5,7 +5,12 @@ import (
 	"github.com/1377195627/goblog"
 	"log"
 	"github.com/1377195627/goblog/api"
+	"flag"
+	"strconv"
 )
+
+var port = flag.Int("p",80,"listen port,default 8080")
+var server = flag.String("S","127.0.0.1","listen server,default 127.0.0.1")
 
 func main() {
 	Init()
@@ -30,7 +35,7 @@ func main() {
 	//router.GET("/install", goblog.InstallRouter)
 	//router.POST("/install", goblog.InstallRouter)
 	router.GET("/", goblog.HomeRouter)
-	router.Run()
+	router.Run(*server+":"+strconv.Itoa(*port))
 }
 
 func Init() {
