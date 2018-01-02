@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-var port = flag.Int("p",80,"listen port,default 8080")
+var port = flag.Int("p",8080,"listen port,default 8080")
 var server = flag.String("S","127.0.0.1","listen server,default 127.0.0.1")
 
 func main() {
