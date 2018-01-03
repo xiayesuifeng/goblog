@@ -9,8 +9,10 @@ import (
 	"strconv"
 )
 
-var port = flag.Int("p",8080,"listen port,default 8080")
-var server = flag.String("S","127.0.0.1","listen server,default 127.0.0.1")
+var (
+	port = flag.Int("p",8080,"listen port,default 8080")
+ 	server = flag.String("S","127.0.0.1","listen server,default 127.0.0.1")
+ 	)
 
 func main() {
 	Init()
@@ -39,6 +41,8 @@ func main() {
 }
 
 func Init() {
+	flag.Parse()
+
 	err := goblog.ParseConf("config.json")
 	if err != nil {
 		log.Fatal(err)
