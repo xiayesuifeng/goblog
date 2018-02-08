@@ -12,7 +12,7 @@
 
 ``` bash
 # download
-go get github.com/1377195627/goblog
+go get -t github.com/1377195627/goblog
 
 cd $(go env GOPATH)/src/github.com/1377195627/goblog
 
