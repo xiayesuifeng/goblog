@@ -14,6 +14,7 @@ import (
 )
 
 type articleData struct {
+	Token string `json:"token" form:"token"`
 	OldName string `json:"oldName" form:"oldName"`
 	Name    string `json:"name" form:"name"`
 	Tag     string `json:"tag" form:"tag"`
@@ -166,15 +167,14 @@ func ArticleByUuid(context *gin.Context) {
 }
 
 func ArticleNew(context *gin.Context) {
-	t := context.PostForm("token")
-	if !token.GetManager().IsExist(t) {
+	var data articleData
+	context.Bind(&data)
+	if !token.GetManager().IsExist(data.Token) {
 		context.JSON(http.StatusOK, gin.H{
 			"status": "no authorized",
 		})
 		return
 	}
-	var data articleData
-	context.Bind(&data)
 	if err := goblog.AddArticle(data.Name, data.Tag, data.Context); err != nil {
 		context.JSON(http.StatusOK, gin.H{
 			"status": err,
@@ -207,16 +207,14 @@ func ArticleDel(context *gin.Context) {
 }
 
 func ArticleEdit(context *gin.Context) {
-	t := context.PostForm("token")
-	if !token.GetManager().IsExist(t) {
+	var data articleData
+	context.Bind(&data)
+	if !token.GetManager().IsExist(data.Token) {
 		context.JSON(http.StatusOK, gin.H{
 			"status": "no authorized",
 		})
 		return
 	}
-	var data articleData
-	context.Bind(&data)
-	fmt.Println(data)
 	if err := goblog.UpdateArticle(data.OldName, data.Name, data.Tag, data.Context); err != nil {
 		context.JSON(http.StatusOK, gin.H{
 			"status": err,
