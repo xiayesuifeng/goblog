@@ -7,6 +7,8 @@ import (
 	"github.com/1377195627/goblog/api"
 	"flag"
 	"strconv"
+	"os"
+	"net/http"
 )
 
 var (
@@ -21,7 +23,7 @@ func main() {
 	//router.LoadHTMLGlob("view/*")
 	router.Static("/images", "static/images")
 
-	apiRoter := router.Group("api")
+	apiRoter := router.Group("api",ApiMiddleWare)
 	apiRoter.POST("/install",goblog.InstallRouter)
 	apiRoter.GET("/name",api.Name)
 	apiRoter.POST("/login", api.Login)
@@ -38,6 +40,19 @@ func main() {
 	//router.POST("/install", goblog.InstallRouter)
 	router.GET("/", goblog.HomeRouter)
 	router.Run(*server+":"+strconv.Itoa(*port))
+}
+
+func ApiMiddleWare(ctx *gin.Context) {
+	if ctx.Request.URL.Path == "/api/install" {
+		ctx.Next()
+	}
+	if _, err := os.Stat("goblog.lock"); err != nil {
+		if os.IsNotExist(err) {
+			ctx.String(http.StatusOK,"blog no install")
+			ctx.Abort()
+		}
+	}
+	ctx.Next()
 }
 
 func Init() {
