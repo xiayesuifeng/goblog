@@ -1,8 +1,8 @@
 package token
 
 import (
-	"time"
 	"sync"
+	"time"
 )
 
 var (
@@ -24,9 +24,9 @@ func GetManager() *TokenManager {
 func (t *TokenManager) GetToken() Token {
 	token := NewToken(1440 * time.Second)
 	t.tokens = append(t.tokens, token)
-	timer :=time.NewTimer(1440 * time.Second)
+	timer := time.NewTimer(1440 * time.Second)
 	go func() {
-		<- timer.C
+		<-timer.C
 		t.DelToken(token)
 	}()
 	return token
@@ -39,7 +39,7 @@ func (t *TokenManager) DelToken(token Token) {
 			tokens = append(tokens, token)
 		}
 	}
-	t.tokens=tokens
+	t.tokens = tokens
 }
 
 func (t *TokenManager) IsExist(token string) bool {

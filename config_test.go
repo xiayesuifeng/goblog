@@ -1,13 +1,13 @@
 package goblog
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 func TestParseConf(t *testing.T) {
-	conf,err := ParseConf("config.json")
-	if err!= nil {
+	conf, err := ParseConf("config.json")
+	if err != nil {
 		t.Error(err)
 	}
 
@@ -15,14 +15,14 @@ func TestParseConf(t *testing.T) {
 }
 
 func TestWriteConf(t *testing.T) {
-	conf,err := ParseConf("config.json")
-	if err!= nil {
+	conf, err := ParseConf("config.json")
+	if err != nil {
 		t.Error(err)
 	}
 
-	err = WriteConf(conf,"config.json")
+	err = WriteConf(conf, "config.json")
 
-	if err!= nil {
+	if err != nil {
 		t.Error(err)
 	}
 }

@@ -1,20 +1,20 @@
 package api
 
 import (
-	"fmt"
 	"crypto/md5"
-	"gopkg.in/gin-gonic/gin.v1"
-	"github.com/1377195627/goblog/token"
-	"net/http"
+	"fmt"
 	"github.com/1377195627/goblog"
-	"log"
-	"time"
-	"io/ioutil"
+	"github.com/1377195627/goblog/token"
 	"github.com/russross/blackfriday"
+	"gopkg.in/gin-gonic/gin.v1"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"time"
 )
 
 type articleData struct {
-	Token string `json:"token" form:"token"`
+	Token   string `json:"token" form:"token"`
 	OldName string `json:"oldName" form:"oldName"`
 	Name    string `json:"name" form:"name"`
 	Tag     string `json:"tag" form:"tag"`
@@ -43,8 +43,8 @@ func Login(context *gin.Context) {
 
 }
 
-func Name(context *gin.Context)  {
-	context.String(http.StatusOK,goblog.Conf.Name)
+func Name(context *gin.Context) {
+	context.String(http.StatusOK, goblog.Conf.Name)
 }
 
 func Tags(context *gin.Context) {
@@ -78,7 +78,7 @@ func Tag(context *gin.Context) {
 	for rows.Next() {
 		var article goblog.Article
 		var createTime, editTIme string
-		rows.Scan(&article.Id,&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
+		rows.Scan(&article.Id, &article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
 		t, _ := time.Parse("2006-01-02 15:04:05", createTime)
 		article.CreateTime = t.Unix()
 		t, _ = time.Parse("2006-01-02 15:04:05", editTIme)
@@ -104,7 +104,7 @@ func TagBytag(context *gin.Context) {
 	for rows.Next() {
 		var article goblog.Article
 		var createTime, editTIme string
-		rows.Scan(&article.Id,&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
+		rows.Scan(&article.Id, &article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
 		t, _ := time.Parse("2006-01-02 15:04:05", createTime)
 		article.CreateTime = t.Unix()
 		t, _ = time.Parse("2006-01-02 15:04:05", editTIme)
@@ -124,7 +124,7 @@ func ArticleByName(context *gin.Context) {
 
 	var article goblog.Article
 	var createTime, editTIme string
-	err := row.Scan(&article.Id,&article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
+	err := row.Scan(&article.Id, &article.Name, &article.Uuid, &article.Tag, &createTime, &editTIme)
 	t, _ := time.Parse("2006-01-02 15:04:05", createTime)
 	article.CreateTime = t.Unix()
 	t, _ = time.Parse("2006-01-02 15:04:05", editTIme)
