@@ -2,6 +2,10 @@
 
 > goblog后端
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/1377195627/goblog)](https://goreportcard.com/report/github.com/1377195627/goblog)
+[![GoDoc](https://godoc.org/github.com/1377195627/goblog?status.svg)](https://godoc.org/github.com/1377195627/goblog)
+[![Sourcegraph](https://sourcegraph.com/github.com/1377195627/goblog/-/badge.svg)](https://sourcegraph.com/github.com/1377195627/goblog)
+
 ## goblog 前端
 
 [goblog-vue](https://github.com/1377195627/goblog-vue.git)
