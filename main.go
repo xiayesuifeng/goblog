@@ -9,11 +9,10 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"sync"
+	"github.com/1377195627/goblog/db"
 )
 
 var (
-	once sync.Once
 	port = flag.Int("p", 8080, "port")
 )
 
@@ -29,14 +28,25 @@ func main() {
 		log.Panicln(err)
 	}
 
-	if err := core.InitDB();err!=nil{
-		log.Panicln(err)
-	}
+	db.Init()
 
 	router := gin.Default()
 
 	store := sessions.NewCookieStore([]byte("goblog"))
 	router.Use(sessions.Sessions("goblog-session", store))
+
+	apiRouter := router.Group("/api")
+
+	apiRouter.POST("/login")
+
+	apiRouter.GET("/tag")
+	apiRouter.GET("/tag/:tag")
+
+	apiRouter.GET("/article/name/:name")
+	apiRouter.GET("/article/uuid/:uuid")
+	apiRouter.POST("/article")
+	apiRouter.PUT("/article")
+	apiRouter.DELETE("/article/:name")
 
 	router.Run(":" + strconv.Itoa(*port))
 }
