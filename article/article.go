@@ -6,6 +6,8 @@ import (
 	"github.com/1377195627/goblog/database"
 	"github.com/satori/go.uuid"
 	"io/ioutil"
+	"github.com/pkg/errors"
+	"os"
 )
 
 type Article struct {
@@ -31,4 +33,32 @@ func AddArticle(title, tag string, categoryId uint,context string) error {
 	}
 
 	return ioutil.WriteFile("data/article/"+md_uuid+".md", []byte(context), 0644)
+}
+
+func EditArticle(id,categoryId uint, title, tag, context string) error {
+	article := Article{}
+
+	db := database.Instance()
+	if db.First(&article,id).RecordNotFound() {
+		return errors.New("article not found")
+	}
+
+	err := ioutil.WriteFile("data/article/"+article.Uuid+".md",[]byte(context),0644)
+	if err != nil {
+		return err
+	}
+
+	return db.Model(&article).Updates(Article{CategoryId:categoryId,Title:title,Tag:tag}).Error
+}
+
+func DeleteArticle(id int) error {
+	db := database.Instance()
+
+	article := Article{}
+	if db.First(&article,id).RecordNotFound() {
+		return errors.New("article not found")
+	}
+
+	os.Remove("data/article/"+article.Uuid+".md")
+	return db.Unscoped().Delete(&article).Error
 }
