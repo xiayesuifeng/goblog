@@ -14,9 +14,9 @@
 - [ ] 首页；
 - [ ] 登录；
 - [ ] 获取article；
-- [ ] 新建article(50%)；
-- [ ] 编辑article；
-- [ ] 删除article;
+- [X] 新建article；
+- [X] 编辑article；
+- [X] 删除article;
 - [X] 获取分类;
 - [X] 新建分类;
 - [X] 编辑分类;
