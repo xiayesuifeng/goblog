@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"github.com/1377195627/goblog/article"
 	"github.com/1377195627/goblog/category"
 	"github.com/1377195627/goblog/controller"
@@ -61,7 +60,7 @@ func init() {
 	err := core.ParseConf("config.json")
 	if err != nil {
 		if os.IsNotExist(err) {
-			fmt.Println("请配置config.json")
+			log.Println("please config config.json")
 			os.Exit(0)
 		}
 		log.Panicln(err)
