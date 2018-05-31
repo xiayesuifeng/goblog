@@ -32,3 +32,8 @@ func GetCategory(id uint) (Category,error) {
 
 	return category,nil
 }
+
+func (c *Category) SetName(name string) error {
+	db := database.Instance()
+	return db.Model(&c).Update("name",name).Error
+}
