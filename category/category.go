@@ -8,7 +8,7 @@ import (
 
 type Category struct {
 	gorm.Model
-	Name string `gorm:"type:varchar(100);unique" json:"name"`
+	Name string `gorm:"type:varchar(100);unique" json:"name" binding:"required"`
 }
 
 func AddCategory(name string) error {
