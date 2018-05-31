@@ -36,9 +36,9 @@ func main() {
 		categoryC := &controller.Category{}
 		apiRouter.GET("/category", categoryC.Gets)
 		apiRouter.GET("/category/:id", categoryC.Get)
-		apiRouter.POST("/category", categoryC.Post)
-		apiRouter.PUT("/category/:id", categoryC.Put)
-		apiRouter.DELETE("/category/:id", categoryC.Delete)
+		apiRouter.POST("/category",loginMiddleware, categoryC.Post)
+		apiRouter.PUT("/category/:id",loginMiddleware, categoryC.Put)
+		apiRouter.DELETE("/category/:id",loginMiddleware, categoryC.Delete)
 	}
 
 	{
@@ -53,9 +53,9 @@ func main() {
 		apiRouter.GET("/article/category/:category", articleC.GetByCategory)
 		apiRouter.GET("/article/name/:name", articleC.Get)
 		apiRouter.GET("/article/uuid/:uuid", articleC.GetByUuid)
-		apiRouter.POST("/article", articleC.Post)
-		apiRouter.PUT("/article/:id", articleC.Put)
-		apiRouter.DELETE("/article/:id", articleC.Delete)
+		apiRouter.POST("/article",loginMiddleware, articleC.Post)
+		apiRouter.PUT("/article/:id",loginMiddleware, articleC.Put)
+		apiRouter.DELETE("/article/:id",loginMiddleware, articleC.Delete)
 	}
 
 	router.Run(":" + strconv.Itoa(*port))
@@ -76,4 +76,17 @@ func init() {
 	db := database.Instance()
 	db.AutoMigrate(&category.Category{})
 	db.AutoMigrate(&article.Article{})
+}
+
+func loginMiddleware(ctx *gin.Context) {
+	session := sessions.Default(ctx)
+
+	login := session.Get("login")
+	if login == nil {
+		ctx.JSON(200, gin.H{
+			"code":    100,
+			"message": "unauthorized",
+		})
+		ctx.Abort()
+	}
 }
