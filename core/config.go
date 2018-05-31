@@ -8,6 +8,8 @@ import (
 var Conf *Config
 
 type Config struct {
+	Name string `json:"name"`
+	Password string `json:"password"`
 	Db   Database `json:"database"`
 	Smtp Smtp     `json:"smtp"`
 }
