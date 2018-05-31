@@ -54,7 +54,7 @@ func main() {
 		apiRouter.GET("/article/name/:name", articleC.Get)
 		apiRouter.GET("/article/uuid/:uuid", articleC.GetByUuid)
 		apiRouter.POST("/article", articleC.Post)
-		apiRouter.PUT("/article", articleC.Put)
+		apiRouter.PUT("/article/:id", articleC.Put)
 		apiRouter.DELETE("/article/:id", articleC.Delete)
 	}
 
