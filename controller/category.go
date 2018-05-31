@@ -11,11 +11,13 @@ type Category struct {
 
 func (c *Category) Post(ctx *gin.Context) {
 	data := category.Category{}
+	ctx.Bind(&data)
 	if data.Name == "" {
 		ctx.JSON(200, gin.H{
 			"code":    100,
 			"message": "name is null",
 		})
+		return
 	}
 
 	if err := category.AddCategory(data.Name); err != nil {
