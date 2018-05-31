@@ -29,26 +29,26 @@ func main() {
 	apiRouter.POST("/login")
 
 	{
-		category := &controller.Category{}
-		apiRouter.GET("/category", category.Gets)
-		apiRouter.GET("/category/:id", category.Get)
-		apiRouter.POST("/category", category.Post)
-		apiRouter.PUT("/category/:id", category.Put)
-		apiRouter.DELETE("/category/:id", category.Delete)
+		categoryC := &controller.Category{}
+		apiRouter.GET("/category", categoryC.Gets)
+		apiRouter.GET("/category/:id", categoryC.Get)
+		apiRouter.POST("/category", categoryC.Post)
+		apiRouter.PUT("/category/:id", categoryC.Put)
+		apiRouter.DELETE("/category/:id", categoryC.Delete)
 	}
 
 	apiRouter.GET("/tag")
 	apiRouter.GET("/tag/:tag")
 
 	{
-		article := &controller.Article{}
-		apiRouter.GET("/article", article.Gets)
-		apiRouter.GET("/article/category/:category", article.GetByCategory)
-		apiRouter.GET("/article/name/:name", article.Get)
-		apiRouter.GET("/article/uuid/:uuid", article.GetByUuid)
-		apiRouter.POST("/article", article.Post)
-		apiRouter.PUT("/article", article.Put)
-		apiRouter.DELETE("/article/:id", article.Delete)
+		articleC := &controller.Article{}
+		apiRouter.GET("/article", articleC.Gets)
+		apiRouter.GET("/article/category/:category", articleC.GetByCategory)
+		apiRouter.GET("/article/name/:name", articleC.Get)
+		apiRouter.GET("/article/uuid/:uuid", articleC.GetByUuid)
+		apiRouter.POST("/article", articleC.Post)
+		apiRouter.PUT("/article", articleC.Put)
+		apiRouter.DELETE("/article/:id", articleC.Delete)
 	}
 
 	router.Run(":" + strconv.Itoa(*port))
