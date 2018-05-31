@@ -11,8 +11,7 @@ type Category struct {
 
 func (c *Category) Post(ctx *gin.Context) {
 	data := category.Category{}
-	ctx.Bind(&data)
-	if data.Name == "" {
+	if err:=ctx.ShouldBind(&data);err!=nil{
 		ctx.JSON(200, gin.H{
 			"code":    100,
 			"message": "name is null",
@@ -84,8 +83,7 @@ func (c *Category) Put(ctx *gin.Context) {
 		return
 	}
 
-	ctx.Bind(&data)
-	if data.Name == "" {
+	if err:=ctx.ShouldBind(&data);err!=nil{
 		ctx.JSON(200, gin.H{
 			"code":    100,
 			"message": "name is null",
