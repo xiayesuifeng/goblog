@@ -10,10 +10,10 @@ import (
 
 type Article struct {
 	gorm.Model
-	Title    string `gorm:"type:varchar(100);unique" json:"title"`
-	Tag      string `json:"tag"`
+	Title    string `gorm:"type:varchar(100);unique" json:"title" binding:"required"`
+	Tag      string `json:"tag" binding:"required"`
 	Uuid     string
-	CategoryId uint `json:"category_id"`
+	CategoryId uint `json:"category_id" binding:"required"`
 }
 
 func AddArticle(title, tag string, categoryId uint,context string) error {
