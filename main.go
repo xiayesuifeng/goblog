@@ -26,7 +26,11 @@ func main() {
 
 	apiRouter := router.Group("/api")
 
-	apiRouter.POST("/login")
+	{
+		adminC := &controller.Admin{}
+		apiRouter.POST("/login", adminC.Login)
+		apiRouter.POST("/logout", adminC.Logout)
+	}
 
 	{
 		categoryC := &controller.Category{}
@@ -37,8 +41,11 @@ func main() {
 		apiRouter.DELETE("/category/:id", categoryC.Delete)
 	}
 
-	apiRouter.GET("/tag")
-	apiRouter.GET("/tag/:tag")
+	{
+		tagC := &controller.Tag{}
+		apiRouter.GET("/tag",tagC.Gets)
+		apiRouter.GET("/tag/:tag",tagC.Get)
+	}
 
 	{
 		articleC := &controller.Article{}
