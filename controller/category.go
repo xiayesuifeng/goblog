@@ -104,5 +104,24 @@ func (c *Category) Put(ctx *gin.Context) {
 }
 
 func (c *Category) Delete(ctx *gin.Context) {
+	param := ctx.Param("id")
+	id,err :=strconv.Atoi(param)
+	if err != nil {
+		ctx.JSON(200, gin.H{
+			"code":      100,
+			"message": "id must integer",
+		})
+		return
+	}
 
+	if err:= category.DeleteCategory(id);err!=nil{
+		ctx.JSON(200, gin.H{
+			"code":    100,
+			"message": err.Error(),
+		})
+	}else{
+		ctx.JSON(200, gin.H{
+			"code":    0,
+		})
+	}
 }

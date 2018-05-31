@@ -33,6 +33,11 @@ func GetCategory(id uint) (Category,error) {
 	return category,nil
 }
 
+func DeleteCategory(id int) error {
+	db := database.Instance()
+	return db.Delete(&Category{},id).Error
+}
+
 func (c *Category) SetName(name string) error {
 	db := database.Instance()
 	return db.Model(&c).Update("name",name).Error
