@@ -17,7 +17,25 @@ func (a *Article) Get(ctx *gin.Context) {
 }
 
 func (a *Article) GetByCategory(ctx *gin.Context) {
-	
+	param := ctx.Param("category_id")
+	id, err := strconv.Atoi(param)
+	if err != nil {
+		ctx.JSON(200, gin.H{
+			"code":      100,
+			"message": "id must integer",
+		})
+		return
+	}
+
+	db := database.Instance()
+	articles := make([]article.Article,0)
+
+	db.Find(&articles).Where("category_id",id)
+
+	ctx.JSON(200,gin.H{
+		"code":0,
+		"articles":articles,
+	})
 }
 func (a *Article) GetByUuid(ctx *gin.Context) {
 	uuid := ctx.Param("uuid")
