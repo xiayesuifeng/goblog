@@ -26,6 +26,10 @@ func main() {
 
 	apiRouter := router.Group("/api")
 
+	apiRouter.GET("/name", func(context *gin.Context) {
+		context.String(200,core.Conf.Name)
+	})
+
 	{
 		adminC := &controller.Admin{}
 		apiRouter.POST("/login", adminC.Login)
