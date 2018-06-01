@@ -1,6 +1,7 @@
 {
   "name": "goblog",
   "password": "0925e15d0ae6af196e6295923d76af02b4a3420f",
+  "dataDir":"data",
   "database":{
     "username":"root",
     "password":"",

@@ -10,6 +10,7 @@ var Conf *Config
 type Config struct {
 	Name string `json:"name"`
 	Password string `json:"password"`
+	DataDir string `json:"data_dir"`
 	Db   Database `json:"database"`
 	Smtp Smtp     `json:"smtp"`
 }

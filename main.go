@@ -75,6 +75,14 @@ func init() {
 	db := database.Instance()
 	db.AutoMigrate(&category.Category{})
 	db.AutoMigrate(&article.Article{})
+
+	if _,err:=os.Stat(core.Conf.DataDir);err!=nil{
+		if os.IsNotExist(err) {
+			os.MkdirAll(core.Conf.DataDir,0755)
+		}else{
+			log.Panicln("data dir create failure")
+		}
+	}
 }
 
 func loginMiddleware(ctx *gin.Context) {
