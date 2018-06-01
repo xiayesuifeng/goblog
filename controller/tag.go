@@ -3,13 +3,22 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/1377195627/goblog/database"
+	"github.com/1377195627/goblog/article"
 )
 
 type Tag struct {
 }
 
 func (t *Tag) Get(ctx *gin.Context)  {
+	db := database.Instance()
+	articles := make([]article.Article,0)
 
+	db.Find(&articles).Where("tag",ctx.Param("tag"))
+
+	ctx.JSON(200,gin.H{
+		"code":0,
+		"articles":articles,
+	})
 }
 
 func (t *Tag) Gets(ctx *gin.Context)  {
