@@ -52,7 +52,7 @@ func main() {
 		apiRouter.GET("/article", articleC.Gets)
 		apiRouter.GET("/article/category/:category", articleC.GetByCategory)
 		apiRouter.GET("/article/name/:name", articleC.Get)
-		apiRouter.GET("/article/uuid/:uuid", articleC.GetByUuid)
+		apiRouter.GET("/article/uuid/:uuid/:mode", articleC.GetByUuid)
 		apiRouter.POST("/article",loginMiddleware, articleC.Post)
 		apiRouter.PUT("/article/:id",loginMiddleware, articleC.Put)
 		apiRouter.DELETE("/article/:id",loginMiddleware, articleC.Delete)

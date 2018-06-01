@@ -5,6 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"github.com/1377195627/goblog/database"
+	"io/ioutil"
+	"github.com/russross/blackfriday"
 )
 
 type Article struct {
@@ -15,10 +17,41 @@ func (a *Article) Get(ctx *gin.Context) {
 }
 
 func (a *Article) GetByCategory(ctx *gin.Context) {
-
+	
 }
 func (a *Article) GetByUuid(ctx *gin.Context) {
+	uuid := ctx.Param("uuid")
+	mode := ctx.Param("mode")
 
+	md, err := ioutil.ReadFile("data/article/" + uuid + ".md")
+	if err != nil {
+		ctx.JSON(200,gin.H{
+			"code":100,
+			"message":"uuid not found",
+		})
+		return
+	}
+
+	switch mode {
+	case "description":
+		html := blackfriday.MarkdownBasic(md)
+		data := []rune(string(html))
+		ctx.JSON(200,gin.H{
+			"code":0,
+			"html":string(data[:100]),
+		})
+	case "html":
+		html := blackfriday.MarkdownBasic(md)
+		ctx.JSON(200,gin.H{
+			"code":0,
+			"html":string(html),
+		})
+	case "markdown":
+		ctx.JSON(200,gin.H{
+			"code":0,
+			"markdown":string(md),
+		})
+	}
 }
 
 func (a *Article) Gets(ctx *gin.Context) {
