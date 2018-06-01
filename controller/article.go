@@ -12,10 +12,6 @@ import (
 type Article struct {
 }
 
-func (a *Article) Get(ctx *gin.Context) {
-
-}
-
 func (a *Article) GetByCategory(ctx *gin.Context) {
 	param := ctx.Param("category_id")
 	id, err := strconv.Atoi(param)

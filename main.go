@@ -51,7 +51,6 @@ func main() {
 		articleC := &controller.Article{}
 		apiRouter.GET("/article", articleC.Gets)
 		apiRouter.GET("/article/category/:category_id", articleC.GetByCategory)
-		apiRouter.GET("/article/name/:name", articleC.Get)
 		apiRouter.GET("/article/uuid/:uuid/:mode", articleC.GetByUuid)
 		apiRouter.POST("/article",loginMiddleware, articleC.Post)
 		apiRouter.PUT("/article/:id",loginMiddleware, articleC.Put)
