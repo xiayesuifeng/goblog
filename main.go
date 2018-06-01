@@ -83,6 +83,8 @@ func init() {
 			log.Panicln("data dir create failure")
 		}
 	}
+
+	gin.SetMode(core.Conf.Mode)
 }
 
 func loginMiddleware(ctx *gin.Context) {

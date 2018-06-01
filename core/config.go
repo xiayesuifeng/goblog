@@ -8,6 +8,7 @@ import (
 var Conf *Config
 
 type Config struct {
+	Mode string `json:"mode"`
 	Name string `json:"name"`
 	Password string `json:"password"`
 	DataDir string `json:"data_dir"`
