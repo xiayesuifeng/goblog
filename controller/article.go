@@ -4,6 +4,7 @@ import (
 	"github.com/1377195627/goblog/article"
 	"github.com/gin-gonic/gin"
 	"strconv"
+	"github.com/1377195627/goblog/database"
 )
 
 type Article struct {
@@ -21,7 +22,14 @@ func (a *Article) GetByUuid(ctx *gin.Context) {
 }
 
 func (a *Article) Gets(ctx *gin.Context) {
+	articles := make([]article.Article,0)
+	db := database.Instance()
+	db.Find(&articles)
 
+	ctx.JSON(200,gin.H{
+		"code":0,
+		"articles":articles,
+	})
 }
 
 func (a *Article) Post(ctx *gin.Context) {
