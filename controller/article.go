@@ -12,6 +12,28 @@ import (
 type Article struct {
 }
 
+func (a *Article) Get(ctx *gin.Context) {
+	param := ctx.Param("id")
+	id, err := strconv.Atoi(param)
+	if err != nil {
+		ctx.JSON(200, gin.H{
+			"code":      100,
+			"message": "id must integer",
+		})
+		return
+	}
+
+	db := database.Instance()
+	article := article.Article{}
+
+	db.First(&article,id)
+
+	ctx.JSON(200,gin.H{
+		"code":0,
+		"article":article,
+	})
+}
+
 func (a *Article) GetByCategory(ctx *gin.Context) {
 	param := ctx.Param("category_id")
 	id, err := strconv.Atoi(param)
