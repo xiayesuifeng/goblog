@@ -70,11 +70,11 @@ func (a *Article) GetByUuid(ctx *gin.Context) {
 
 	switch mode {
 	case "description":
-		html := blackfriday.MarkdownBasic(md)
-		data := []rune(string(html))
+		tmp := []rune(string(md))[:100]
+		html := blackfriday.MarkdownBasic([]byte(string(tmp)))
 		ctx.JSON(200,gin.H{
 			"code":0,
-			"html":string(data[:100]),
+			"html":string(html),
 		})
 	case "html":
 		html := blackfriday.MarkdownBasic(md)
