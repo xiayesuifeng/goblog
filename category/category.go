@@ -35,7 +35,7 @@ func GetCategory(id uint) (Category,error) {
 
 func DeleteCategory(id int) error {
 	db := database.Instance()
-	return db.Delete(&Category{},id).Error
+	return db.Unscoped().Delete(&Category{},id).Error
 }
 
 func (c *Category) SetName(name string) error {
