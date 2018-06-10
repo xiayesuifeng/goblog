@@ -23,7 +23,7 @@ func (t *Tag) Get(ctx *gin.Context)  {
 
 func (t *Tag) Gets(ctx *gin.Context)  {
 	db := database.Instance()
-	rows,err :=db.Table("articles").Select("tag").Rows()
+	rows,err :=db.Table("articles").Select("DISTINCT tag").Rows()
 	if err != nil {
 		ctx.JSON(200,gin.H{
 			"code":100,
