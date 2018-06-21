@@ -48,7 +48,7 @@ func (a *Article) GetByCategory(ctx *gin.Context) {
 	db := database.Instance()
 	articles := make([]article.Article,0)
 
-	db.Find(&articles).Where("category_id",id)
+	db.Where("category_id = ?",id).Find(&articles)
 
 	ctx.JSON(200,gin.H{
 		"code":0,
