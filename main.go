@@ -93,6 +93,17 @@ func init() {
 	}
 
 	gin.SetMode(core.Conf.Mode)
+
+	if !core.Conf.UseCategory {
+		tmp := category.Category{Name:"other"}
+		if db.Where(&tmp).First(&tmp).RecordNotFound() {
+			if err:=db.Create(&tmp).Error;err!=nil{
+				log.Panicln(err)
+			}
+		}
+
+		db.Model(&article.Article{}).Updates(article.Article{CategoryId:tmp.ID})
+	}
 }
 
 func loginMiddleware(ctx *gin.Context) {
