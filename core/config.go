@@ -11,6 +11,7 @@ type Config struct {
 	Mode string `json:"mode"`
 	Name string `json:"name"`
 	Password string `json:"password"`
+	UseCategory bool `json:"useCategory"`
 	DataDir string `json:"data_dir"`
 	Db   Database `json:"database"`
 	Smtp Smtp     `json:"smtp"`
