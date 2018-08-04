@@ -8,14 +8,14 @@ import (
 var Conf *Config
 
 type Config struct {
-	Mode string `json:"mode"`
-	Name string `json:"name"`
-	Password string `json:"password"`
-	UseCategory bool `json:"useCategory"`
+	Mode            string `json:"mode"`
+	Name            string `json:"name"`
+	Password        string `json:"password"`
+	UseCategory     bool   `json:"useCategory"`
 	OtherCategoryId uint
-	DataDir string `json:"data_dir"`
-	Db   Database `json:"database"`
-	Smtp Smtp     `json:"smtp"`
+	DataDir         string   `json:"data_dir"`
+	Db              Database `json:"database"`
+	Smtp            Smtp     `json:"smtp"`
 }
 
 type Database struct {

@@ -1,38 +1,38 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/1377195627/goblog/database"
 	"github.com/1377195627/goblog/article"
+	"github.com/1377195627/goblog/database"
+	"github.com/gin-gonic/gin"
 )
 
 type Tag struct {
 }
 
-func (t *Tag) Get(ctx *gin.Context)  {
+func (t *Tag) Get(ctx *gin.Context) {
 	db := database.Instance()
-	articles := make([]article.Article,0)
+	articles := make([]article.Article, 0)
 
-	db.Find(&articles).Where("tag",ctx.Param("tag"))
+	db.Find(&articles).Where("tag", ctx.Param("tag"))
 
-	ctx.JSON(200,gin.H{
-		"code":0,
-		"articles":articles,
+	ctx.JSON(200, gin.H{
+		"code":     0,
+		"articles": articles,
 	})
 }
 
-func (t *Tag) Gets(ctx *gin.Context)  {
+func (t *Tag) Gets(ctx *gin.Context) {
 	db := database.Instance()
-	rows,err :=db.Table("articles").Select("DISTINCT tag").Rows()
+	rows, err := db.Table("articles").Select("DISTINCT tag").Rows()
 	if err != nil {
-		ctx.JSON(200,gin.H{
-			"code":100,
-			"message":err.Error(),
+		ctx.JSON(200, gin.H{
+			"code":    100,
+			"message": err.Error(),
 		})
 		return
 	}
 
-	tags := make([]string,0)
+	tags := make([]string, 0)
 
 	for rows.Next() {
 		var tag string

@@ -11,7 +11,7 @@ type Category struct {
 
 func (c *Category) Post(ctx *gin.Context) {
 	data := category.Category{}
-	if err:=ctx.ShouldBind(&data);err!=nil{
+	if err := ctx.ShouldBind(&data); err != nil {
 		ctx.JSON(200, gin.H{
 			"code":    100,
 			"message": "name is null",
@@ -32,32 +32,32 @@ func (c *Category) Post(ctx *gin.Context) {
 }
 
 func (c *Category) Gets(ctx *gin.Context) {
-	ctx.JSON(200,gin.H{
-		"code": 0,
-		"categorys":category.GetCategorys(),
+	ctx.JSON(200, gin.H{
+		"code":      0,
+		"categorys": category.GetCategorys(),
 	})
 }
 
 func (c *Category) Get(ctx *gin.Context) {
 	param := ctx.Param("id")
-	id,err :=strconv.Atoi(param)
+	id, err := strconv.Atoi(param)
 	if err != nil {
 		ctx.JSON(200, gin.H{
-			"code":      100,
+			"code":    100,
 			"message": "id must integer",
 		})
 		return
 	}
 
-	category,err := category.GetCategory(uint(id))
+	category, err := category.GetCategory(uint(id))
 	if err != nil {
 		ctx.JSON(200, gin.H{
-			"code":      100,
+			"code":    100,
 			"message": err.Error(),
 		})
-	}else {
+	} else {
 		ctx.JSON(200, gin.H{
-			"code":      0,
+			"code":     0,
 			"category": category,
 		})
 	}
@@ -65,25 +65,25 @@ func (c *Category) Get(ctx *gin.Context) {
 
 func (c *Category) Put(ctx *gin.Context) {
 	param := ctx.Param("id")
-	id,err :=strconv.Atoi(param)
+	id, err := strconv.Atoi(param)
 	if err != nil {
 		ctx.JSON(200, gin.H{
-			"code":      100,
+			"code":    100,
 			"message": "id must integer",
 		})
 		return
 	}
 
-	data,err := category.GetCategory(uint(id))
+	data, err := category.GetCategory(uint(id))
 	if err != nil {
-		ctx.JSON(200,gin.H{
-			"code":100,
-			"message":"category not found",
+		ctx.JSON(200, gin.H{
+			"code":    100,
+			"message": "category not found",
 		})
 		return
 	}
 
-	if err:=ctx.ShouldBind(&data);err!=nil{
+	if err := ctx.ShouldBind(&data); err != nil {
 		ctx.JSON(200, gin.H{
 			"code":    100,
 			"message": "name is null",
@@ -91,37 +91,37 @@ func (c *Category) Put(ctx *gin.Context) {
 		return
 	}
 
-	if err:=data.SetName(data.Name);err!=nil{
+	if err := data.SetName(data.Name); err != nil {
 		ctx.JSON(200, gin.H{
 			"code":    100,
 			"message": err.Error(),
 		})
-	}else{
+	} else {
 		ctx.JSON(200, gin.H{
-			"code":    0,
+			"code": 0,
 		})
 	}
 }
 
 func (c *Category) Delete(ctx *gin.Context) {
 	param := ctx.Param("id")
-	id,err :=strconv.Atoi(param)
+	id, err := strconv.Atoi(param)
 	if err != nil {
 		ctx.JSON(200, gin.H{
-			"code":      100,
+			"code":    100,
 			"message": "id must integer",
 		})
 		return
 	}
 
-	if err:= category.DeleteCategory(id);err!=nil{
+	if err := category.DeleteCategory(id); err != nil {
 		ctx.JSON(200, gin.H{
 			"code":    100,
 			"message": err.Error(),
 		})
-	}else{
+	} else {
 		ctx.JSON(200, gin.H{
-			"code":    0,
+			"code": 0,
 		})
 	}
 }

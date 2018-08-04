@@ -1,12 +1,12 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/gin-contrib/sessions"
 	"crypto/md5"
 	"crypto/sha1"
 	"encoding/hex"
 	"github.com/1377195627/goblog/core"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 )
 
 type Admin struct {
@@ -29,12 +29,12 @@ func (a *Admin) Login(ctx *gin.Context) {
 
 	session := sessions.Default(ctx)
 
-	md5Data :=md5.Sum([]byte(data.Password))
-	sha1Data :=sha1.Sum([]byte(md5Data[:]))
+	md5Data := md5.Sum([]byte(data.Password))
+	sha1Data := sha1.Sum([]byte(md5Data[:]))
 	passwd := hex.EncodeToString(sha1Data[:])
 
 	if passwd == core.Conf.Password {
-		session.Set("login",true)
+		session.Set("login", true)
 		session.Save()
 
 		ctx.JSON(200, gin.H{

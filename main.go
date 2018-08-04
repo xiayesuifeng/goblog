@@ -27,9 +27,9 @@ func main() {
 	apiRouter := router.Group("/api")
 
 	apiRouter.GET("/info", func(context *gin.Context) {
-		context.JSON(200,gin.H{
-			"name":core.Conf.Name,
-			"useCategory":core.Conf.UseCategory,
+		context.JSON(200, gin.H{
+			"name":        core.Conf.Name,
+			"useCategory": core.Conf.UseCategory,
 		})
 	})
 
@@ -43,15 +43,15 @@ func main() {
 		categoryC := &controller.Category{}
 		apiRouter.GET("/category", categoryC.Gets)
 		apiRouter.GET("/category/:id", categoryC.Get)
-		apiRouter.POST("/category",loginMiddleware, categoryC.Post)
-		apiRouter.PUT("/category/:id",loginMiddleware, categoryC.Put)
-		apiRouter.DELETE("/category/:id",loginMiddleware, categoryC.Delete)
+		apiRouter.POST("/category", loginMiddleware, categoryC.Post)
+		apiRouter.PUT("/category/:id", loginMiddleware, categoryC.Put)
+		apiRouter.DELETE("/category/:id", loginMiddleware, categoryC.Delete)
 	}
 
 	{
 		tagC := &controller.Tag{}
-		apiRouter.GET("/tag",tagC.Gets)
-		apiRouter.GET("/tag/:tag",tagC.Get)
+		apiRouter.GET("/tag", tagC.Gets)
+		apiRouter.GET("/tag/:tag", tagC.Get)
 	}
 
 	{
@@ -60,9 +60,9 @@ func main() {
 		apiRouter.GET("/article/id/:id", articleC.Get)
 		apiRouter.GET("/article/category/:category_id", articleC.GetByCategory)
 		apiRouter.GET("/article/uuid/:uuid/:mode", articleC.GetByUuid)
-		apiRouter.POST("/article",loginMiddleware, articleC.Post)
-		apiRouter.PUT("/article/:id",loginMiddleware, articleC.Put)
-		apiRouter.DELETE("/article/:id",loginMiddleware, articleC.Delete)
+		apiRouter.POST("/article", loginMiddleware, articleC.Post)
+		apiRouter.PUT("/article/:id", loginMiddleware, articleC.Put)
+		apiRouter.DELETE("/article/:id", loginMiddleware, articleC.Delete)
 	}
 
 	router.Run(":" + strconv.Itoa(*port))
@@ -84,10 +84,10 @@ func init() {
 	db.AutoMigrate(&category.Category{})
 	db.AutoMigrate(&article.Article{})
 
-	if _,err:=os.Stat(core.Conf.DataDir);err!=nil{
+	if _, err := os.Stat(core.Conf.DataDir); err != nil {
 		if os.IsNotExist(err) {
-			os.MkdirAll(core.Conf.DataDir,0755)
-		}else{
+			os.MkdirAll(core.Conf.DataDir, 0755)
+		} else {
 			log.Panicln("data dir create failure")
 		}
 	}
@@ -95,14 +95,15 @@ func init() {
 	gin.SetMode(core.Conf.Mode)
 
 	if !core.Conf.UseCategory {
-		tmp := category.Category{Name:"other"}
+		tmp := category.Category{Name: "other"}
 		if db.Where(&tmp).First(&tmp).RecordNotFound() {
-			if err:=db.Create(&tmp).Error;err!=nil{
+			if err := db.Create(&tmp).Error; err != nil {
 				log.Panicln(err)
 			}
 		}
 
-		db.Model(&article.Article{}).Updates(article.Article{CategoryId:tmp.ID})
+		db.Model(&article.Article{}).Updates(article.Article{CategoryId: tmp.ID})
+		core.Conf.OtherCategoryId = tmp.ID
 	}
 }
 
