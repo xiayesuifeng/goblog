@@ -7,7 +7,8 @@ import (
 	"github.com/1377195627/goblog/database"
 	"io/ioutil"
 	"github.com/russross/blackfriday"
-)
+	"github.com/1377195627/goblog/core"
+	)
 
 type Article struct {
 }
@@ -127,6 +128,18 @@ func (a *Article) Post(ctx *gin.Context) {
 		return
 	}
 
+	if core.Conf.UseCategory {
+		if data.CategoryId==0 {
+			ctx.JSON(200, gin.H{
+				"code":    100,
+				"message": "category_id must exist",
+			})
+			return
+		}
+	} else {
+		data.CategoryId = core.Conf.OtherCategoryId
+	}
+
 	if err := article.AddArticle(data.Title, data.Tag, data.CategoryId, data.Context); err != nil {
 		ctx.JSON(200, gin.H{
 			"code":    100,
@@ -160,6 +173,18 @@ func (a *Article) Put(ctx *gin.Context) {
 			"message": err.Error(),
 		})
 		return
+	}
+
+	if core.Conf.UseCategory {
+		if data.CategoryId==0 {
+			ctx.JSON(200, gin.H{
+				"code":    100,
+				"message": "category_id must exist",
+			})
+			return
+		}
+	} else {
+		data.CategoryId = core.Conf.OtherCategoryId
 	}
 
 	if err:=article.EditArticle(uint(id), data.CategoryId, data.Title, data.Tag, data.Context); err != nil {

@@ -15,7 +15,7 @@ type Article struct {
 	Title    string `gorm:"type:varchar(100);unique" json:"title" binding:"required"`
 	Tag      string `json:"tag" binding:"required"`
 	Uuid     string
-	CategoryId uint `json:"category_id" binding:"required"`
+	CategoryId uint `json:"category_id"`
 }
 
 func AddArticle(title, tag string, categoryId uint,context string) error {
