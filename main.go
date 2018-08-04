@@ -26,8 +26,11 @@ func main() {
 
 	apiRouter := router.Group("/api")
 
-	apiRouter.GET("/name", func(context *gin.Context) {
-		context.String(200,core.Conf.Name)
+	apiRouter.GET("/info", func(context *gin.Context) {
+		context.JSON(200,gin.H{
+			"name":core.Conf.Name,
+			"useCategory":core.Conf.UseCategory,
+		})
 	})
 
 	{
