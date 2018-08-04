@@ -79,6 +79,15 @@ func (a *Article) GetByUuid(ctx *gin.Context) {
 			"code":0,
 			"html":string(html),
 		})
+	case "description_md":
+		tmp := []rune(string(md))
+		if len(tmp) > 100 {
+			tmp = tmp[:100]
+		}
+		ctx.JSON(200,gin.H{
+			"code":0,
+			"markdown":string(tmp),
+		})
 	case "html":
 		html := blackfriday.MarkdownBasic(md)
 		ctx.JSON(200,gin.H{
