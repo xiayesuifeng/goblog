@@ -97,7 +97,7 @@ echo -n yourpassword | openssl dgst -md5 -binary | openssl dgst -sha1
 
 ## Contributors
 
-- [Contributors](https://github.com/1377195627/goblog/graphs/contributors)
+- [Contributors](https://github.com/xiayesuifeng/goblog/graphs/contributors)
 
 ## License
 
