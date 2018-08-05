@@ -74,6 +74,13 @@ wget -O goblog-web/config.json https://github.com/xiayesuifeng/goblog/raw/master
 }
 ```
 
+> 后端启动
+
+```
+cd goblog-web
+goblog -p 20181
+```
+
 > caddy配置实例
 
 ```
