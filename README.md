@@ -2,13 +2,13 @@
 
 > 个人博客goblog后端
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/1377195627/goblog)](https://goreportcard.com/report/github.com/1377195627/goblog)
-[![GoDoc](https://godoc.org/github.com/1377195627/goblog?status.svg)](https://godoc.org/github.com/1377195627/goblog)
-[![Sourcegraph](https://sourcegraph.com/github.com/1377195627/goblog/-/badge.svg)](https://sourcegraph.com/github.com/1377195627/goblog@2.0)
+[![Go Report Card](https://goreportcard.com/badge/gitlab.com/xiayesuifeng/goblog)](https://goreportcard.com/report/gitlab.com/xiayesuifeng/goblog)
+[![GoDoc](https://godoc.org/gitlab.com/xiayesuifeng/goblog?status.svg)](https://godoc.org/gitlab.com/xiayesuifeng/goblog)
+[![Sourcegraph](https://sourcegraph.com/gitlab.com/xiayesuifeng/goblog/-/badge.svg)](https://sourcegraph.com/gitlab.com/xiayesuifeng/goblog)
 
 ## 前端
 
-[goblog-web](https://github.com/xiayesuifeng/goblog-web.git)
+[goblog-web](https://gitlab.com/xiayesuifeng/goblog-web.git)
 
 ## 重构计划
 
@@ -29,8 +29,8 @@
 ## 编译
 
 ```
-go get github.com/xiayesuifeng/goblog
-go build -ldflags "-s -w" github.com/xiayesuifeng/goblog
+go get gitlab.com/xiayesuifeng/goblog
+go build -ldflags "-s -w" gitlab.com/xiayesuifeng/goblog
 ```
 
 ## 配置
@@ -38,7 +38,7 @@ go build -ldflags "-s -w" github.com/xiayesuifeng/goblog
 > 前端
 
 ```
-git clone https://github.com/xiayesuifeng/goblog-web.git
+git clone https://gitlab.com/xiayesuifeng/goblog-web.git
 npm install
 npm build
 ```
@@ -47,7 +47,7 @@ npm build
 
 ```
 cp goblog goblog-web
-wget -O goblog-web/config.json https://github.com/xiayesuifeng/goblog/raw/master/config.default.json
+wget -O goblog-web/config.json https://gitlab.com/xiayesuifeng/goblog/raw/master/config.default.json
 ```
 
 > config.json
@@ -101,10 +101,6 @@ your {
 ```
 echo -n yourpassword | openssl dgst -md5 -binary | openssl dgst -sha1
 ```
-
-## Contributors
-
-- [Contributors](https://github.com/xiayesuifeng/goblog/graphs/contributors)
 
 ## License
 
