@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"crypto/sha1"
 	"encoding/hex"
-	"github.com/1377195627/goblog/core"
+	"gitlab.com/xiayesuifeng/goblog/core"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )

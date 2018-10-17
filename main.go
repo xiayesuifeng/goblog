@@ -2,11 +2,11 @@ package main
 
 import (
 	"flag"
-	"github.com/1377195627/goblog/article"
-	"github.com/1377195627/goblog/category"
-	"github.com/1377195627/goblog/controller"
-	"github.com/1377195627/goblog/core"
-	"github.com/1377195627/goblog/database"
+	"gitlab.com/xiayesuifeng/goblog/article"
+	"gitlab.com/xiayesuifeng/goblog/category"
+	"gitlab.com/xiayesuifeng/goblog/controller"
+	"gitlab.com/xiayesuifeng/goblog/core"
+	"gitlab.com/xiayesuifeng/goblog/database"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"log"

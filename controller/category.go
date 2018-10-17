@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"github.com/1377195627/goblog/category"
+	"gitlab.com/xiayesuifeng/goblog/category"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )

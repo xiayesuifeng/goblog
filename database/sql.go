@@ -2,7 +2,7 @@ package database
 
 import (
 	"fmt"
-	"github.com/1377195627/goblog/core"
+	"gitlab.com/xiayesuifeng/goblog/core"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"

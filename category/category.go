@@ -2,7 +2,7 @@ package category
 
 import (
 	"errors"
-	"github.com/1377195627/goblog/database"
+	"gitlab.com/xiayesuifeng/goblog/database"
 	"github.com/jinzhu/gorm"
 )
 

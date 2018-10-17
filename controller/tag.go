@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"github.com/1377195627/goblog/article"
-	"github.com/1377195627/goblog/database"
+	"gitlab.com/xiayesuifeng/goblog/article"
+	"gitlab.com/xiayesuifeng/goblog/database"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,8 +1,8 @@
 package article
 
 import (
-	"github.com/1377195627/goblog/category"
-	"github.com/1377195627/goblog/database"
+	"gitlab.com/xiayesuifeng/goblog/category"
+	"gitlab.com/xiayesuifeng/goblog/database"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
