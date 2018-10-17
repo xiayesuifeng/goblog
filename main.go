@@ -2,13 +2,14 @@ package main
 
 import (
 	"flag"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/gin"
 	"gitlab.com/xiayesuifeng/goblog/article"
 	"gitlab.com/xiayesuifeng/goblog/category"
 	"gitlab.com/xiayesuifeng/goblog/controller"
 	"gitlab.com/xiayesuifeng/goblog/core"
 	"gitlab.com/xiayesuifeng/goblog/database"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
 	"log"
 	"os"
 	"strconv"
@@ -21,7 +22,7 @@ var (
 func main() {
 	router := gin.Default()
 
-	store := sessions.NewCookieStore([]byte("goblog"))
+	store := cookie.NewStore([]byte("goblog"))
 	router.Use(sessions.Sessions("goblog-session", store))
 
 	apiRouter := router.Group("/api")
