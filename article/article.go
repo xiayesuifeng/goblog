@@ -24,7 +24,11 @@ func AddArticle(title, tag string, categoryId uint, context string) error {
 		return err
 	}
 
-	md_uuid := uuid.NewV1().String()
+	var tmp uuid.UUID
+	if tmp, err = uuid.NewV4(); err != nil {
+		return err
+	}
+	md_uuid := tmp.String()
 
 	article := Article{Title: title, Tag: tag, Uuid: md_uuid, CategoryId: categoryId}
 	db := database.Instance()
