@@ -2,6 +2,7 @@
 
 > 个人博客goblog后端
 
+[![pipeline status](https://gitlab.com/xiayesuifeng/goblog/badges/master/pipeline.svg)](https://gitlab.com/xiayesuifeng/goblog/commits/master)
 [![Go Report Card](https://goreportcard.com/badge/gitlab.com/xiayesuifeng/goblog)](https://goreportcard.com/report/gitlab.com/xiayesuifeng/goblog)
 [![GoDoc](https://godoc.org/gitlab.com/xiayesuifeng/goblog?status.svg)](https://godoc.org/gitlab.com/xiayesuifeng/goblog)
 [![Sourcegraph](https://sourcegraph.com/gitlab.com/xiayesuifeng/goblog/-/badge.svg)](https://sourcegraph.com/gitlab.com/xiayesuifeng/goblog)
