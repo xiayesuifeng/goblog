@@ -2,8 +2,8 @@ package category
 
 import (
 	"errors"
-	"gitlab.com/xiayesuifeng/goblog/database"
 	"github.com/jinzhu/gorm"
+	"gitlab.com/xiayesuifeng/goblog/database"
 )
 
 type Category struct {

@@ -1,11 +1,11 @@
 package article
 
 import (
-	"gitlab.com/xiayesuifeng/goblog/category"
-	"gitlab.com/xiayesuifeng/goblog/database"
 	"github.com/jinzhu/gorm"
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
+	"gitlab.com/xiayesuifeng/goblog/category"
+	"gitlab.com/xiayesuifeng/goblog/database"
 	"io/ioutil"
 	"os"
 )

@@ -1,9 +1,9 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
 	"gitlab.com/xiayesuifeng/goblog/article"
 	"gitlab.com/xiayesuifeng/goblog/database"
-	"github.com/gin-gonic/gin"
 )
 
 type Tag struct {

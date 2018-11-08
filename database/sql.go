@@ -2,9 +2,9 @@ package database
 
 import (
 	"fmt"
-	"gitlab.com/xiayesuifeng/goblog/core"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"gitlab.com/xiayesuifeng/goblog/core"
 	"log"
 	"sync"
 )

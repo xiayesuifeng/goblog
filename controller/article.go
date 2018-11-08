@@ -1,11 +1,11 @@
 package controller
 
 import (
+	"github.com/gin-gonic/gin"
+	"github.com/russross/blackfriday"
 	"gitlab.com/xiayesuifeng/goblog/article"
 	"gitlab.com/xiayesuifeng/goblog/core"
 	"gitlab.com/xiayesuifeng/goblog/database"
-	"github.com/gin-gonic/gin"
-	"github.com/russross/blackfriday"
 	"io/ioutil"
 	"strconv"
 )
