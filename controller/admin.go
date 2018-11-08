@@ -4,9 +4,10 @@ import (
 	"crypto/md5"
 	"crypto/sha1"
 	"encoding/hex"
-	"gitlab.com/xiayesuifeng/goblog/core"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"gitlab.com/xiayesuifeng/goblog/core"
+	"os"
 )
 
 type Admin struct {
@@ -64,4 +65,23 @@ func (a *Admin) Logout(ctx *gin.Context) {
 			"message": "no login",
 		})
 	}
+}
+
+func (a *Admin) GetInfo(ctx *gin.Context) {
+	logo := "/api/logo"
+	_, err := os.Stat(core.Conf.DataDir + "/logo")
+	if err != nil {
+		if os.IsNotExist(err) {
+			logo = "none"
+		}
+	}
+	ctx.JSON(200, gin.H{
+		"name":        core.Conf.Name,
+		"useCategory": core.Conf.UseCategory,
+		"logo":        logo,
+	})
+}
+
+func (a *Admin) PatchInfo(ctx *gin.Context) {
+
 }

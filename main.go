@@ -27,17 +27,14 @@ func main() {
 
 	apiRouter := router.Group("/api")
 
-	apiRouter.GET("/info", func(context *gin.Context) {
-		context.JSON(200, gin.H{
-			"name":        core.Conf.Name,
-			"useCategory": core.Conf.UseCategory,
-		})
-	})
-
 	{
 		adminC := &controller.Admin{}
 		apiRouter.POST("/login", adminC.Login)
 		apiRouter.POST("/logout", adminC.Logout)
+		apiRouter.GET("/info", adminC.GetInfo)
+		apiRouter.PATCH("/info", loginMiddleware, adminC.PatchInfo)
+		apiRouter.GET("/logo")
+		apiRouter.PUT("/logo", loginMiddleware)
 	}
 
 	{
