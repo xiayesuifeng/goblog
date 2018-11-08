@@ -44,3 +44,12 @@ func ParseConf(config string) error {
 	Conf = &c
 	return err
 }
+
+func SaveConf() error {
+	conf, err := os.OpenFile("config.json", os.O_RDWR|os.O_TRUNC, 0644)
+	if err != nil {
+		return err
+	}
+
+	return json.NewEncoder(conf).Encode(&Conf)
+}
