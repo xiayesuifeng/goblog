@@ -33,7 +33,7 @@ func main() {
 		apiRouter.POST("/logout", adminC.Logout)
 		apiRouter.GET("/info", adminC.GetInfo)
 		apiRouter.PATCH("/info", loginMiddleware, adminC.PatchInfo)
-		apiRouter.GET("/logo")
+		apiRouter.GET("/logo", adminC.GetLogo)
 		apiRouter.PUT("/logo", loginMiddleware)
 	}
 

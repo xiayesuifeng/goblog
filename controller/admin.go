@@ -121,3 +121,10 @@ func (a *Admin) PatchInfo(ctx *gin.Context) {
 		}
 	}
 }
+
+func (a *Admin) GetLogo(ctx *gin.Context) {
+	ctx.File(core.Conf.DataDir + "/logo")
+}
+
+func (a *Admin) PutLogo(ctx *gin.Context) {
+}
