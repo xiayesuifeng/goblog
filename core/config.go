@@ -13,7 +13,7 @@ type Config struct {
 	Password        string `json:"password"`
 	UseCategory     bool   `json:"useCategory"`
 	OtherCategoryId uint
-	DataDir         string   `json:"data_dir"`
+	DataDir         string   `json:"dataDir"`
 	Db              Database `json:"database"`
 	Smtp            Smtp     `json:"smtp"`
 }
