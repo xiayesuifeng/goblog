@@ -83,5 +83,41 @@ func (a *Admin) GetInfo(ctx *gin.Context) {
 }
 
 func (a *Admin) PatchInfo(ctx *gin.Context) {
+	type Data struct {
+		Name        string `json:"name"`
+		UseCategory *bool  `json:"useCategory"`
+	}
 
+	data := Data{}
+
+	if err := ctx.ShouldBind(&data); err != nil {
+		ctx.JSON(200, gin.H{
+			"code":    100,
+			"message": err.Error(),
+		})
+	} else if data.Name == "" && data.UseCategory == nil {
+		ctx.JSON(200, gin.H{
+			"code":    100,
+			"message": "need name or useCategory",
+		})
+	} else {
+		if data.Name != "" {
+			core.Conf.Name = data.Name
+		}
+
+		if data.UseCategory != nil {
+			core.Conf.UseCategory = *data.UseCategory
+		}
+
+		if err := core.SaveConf(); err != nil {
+			ctx.JSON(200, gin.H{
+				"code":    100,
+				"message": err.Error(),
+			})
+		} else {
+			ctx.JSON(200, gin.H{
+				"code": 0,
+			})
+		}
+	}
 }
