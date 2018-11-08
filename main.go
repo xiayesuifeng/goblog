@@ -34,7 +34,7 @@ func main() {
 		apiRouter.GET("/info", adminC.GetInfo)
 		apiRouter.PATCH("/info", loginMiddleware, adminC.PatchInfo)
 		apiRouter.GET("/logo", adminC.GetLogo)
-		apiRouter.PUT("/logo", loginMiddleware)
+		apiRouter.PUT("/logo", loginMiddleware, adminC.PutLogo)
 	}
 
 	{

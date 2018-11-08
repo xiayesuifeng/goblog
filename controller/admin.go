@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/xiayesuifeng/goblog/core"
+	"io"
 	"os"
 )
 
@@ -127,4 +128,27 @@ func (a *Admin) GetLogo(ctx *gin.Context) {
 }
 
 func (a *Admin) PutLogo(ctx *gin.Context) {
+	logo, _, err := ctx.Request.FormFile("logo")
+	if err != nil {
+		ctx.JSON(200, gin.H{
+			"code":    100,
+			"message": err.Error(),
+		})
+	} else {
+		file, err := os.Create(core.Conf.DataDir + "/logo")
+		if err != nil {
+			ctx.JSON(200, gin.H{
+				"code":    105,
+				"message": err.Error(),
+			})
+			return
+		}
+
+		defer file.Close()
+
+		io.Copy(file, logo)
+		ctx.JSON(200, gin.H{
+			"code": 0,
+		})
+	}
 }
