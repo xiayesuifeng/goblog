@@ -14,17 +14,19 @@
 
 现已使用 [gin](https://github.com/gin-gonic/gin) , [gorm](https://github.com/jinzhu/gorm) , [gin-sessions](https://github.com/gin-contrib/sessions) 进行后端重构，前端使用react重构，使用axios和后端 API 进行交互。
 
-- [X] 架构搭建；
-- [X] 登录；
-- [X] 获取article；
-- [X] 新建article；
-- [X] 编辑article；
-- [X] 删除article;
-- [X] 获取分类;
-- [X] 新建分类;
-- [X] 编辑分类;
-- [X] 删除分类;
-- [ ] 插件机制;
+- [ ] 一键部署
+- [ ] 信息修改
+- [X] 架构搭建
+- [X] 登录
+- [X] 获取article
+- [X] 新建article
+- [X] 编辑article
+- [X] 删除article
+- [X] 获取分类
+- [X] 新建分类
+- [X] 编辑分类
+- [X] 删除分类
+- [ ] 插件机制
 
 ## 编译
 
