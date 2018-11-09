@@ -19,6 +19,7 @@ type Config struct {
 }
 
 type Database struct {
+	Driver   string `json:"driver"`
 	Address  string `json:"address" form:"address"`
 	Port     string `json:"port" form:"port"`
 	Dbname   string `json:"dbname" form:"dbname"`
