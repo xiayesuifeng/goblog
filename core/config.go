@@ -46,10 +46,9 @@ func ParseConf(config string) error {
 }
 
 func SaveConf() error {
-	conf, err := os.OpenFile("config.json", os.O_RDWR|os.O_TRUNC, 0644)
+	conf, err := os.OpenFile("config.json", os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0644)
 	if err != nil {
 		return err
 	}
-
 	return json.NewEncoder(conf).Encode(&Conf)
 }
