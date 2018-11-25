@@ -1,7 +1,11 @@
 package main
 
 import (
+	"crypto/md5"
+	"crypto/sha1"
+	"encoding/hex"
 	"flag"
+	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
@@ -16,7 +20,9 @@ import (
 )
 
 var (
-	port = flag.Int("p", 8080, "port")
+	port    = flag.Int("p", 8080, "port")
+	install = flag.Bool("i", false, "install goblog")
+	help    = flag.Bool("h", false, "help")
 )
 
 func main() {
@@ -68,6 +74,10 @@ func main() {
 
 func init() {
 	flag.Parse()
+	if *install {
+		log.Println(installGoBlog())
+		os.Exit(0)
+	}
 
 	err := core.ParseConf("config.json")
 	if err != nil {
@@ -116,4 +126,63 @@ func loginMiddleware(ctx *gin.Context) {
 		})
 		ctx.Abort()
 	}
+}
+
+func installGoBlog() error {
+	conf := core.Config{}
+	fmt.Println("======================")
+	fmt.Println("首次运行需要部署一些东西")
+	fmt.Println("======================")
+	fmt.Print("请输入博客名:")
+	fmt.Scanln(&conf.Name)
+	fmt.Print("请输入登录密码:")
+	fmt.Scanln(&conf.Password)
+	md5Data := md5.Sum([]byte(conf.Password))
+	sha1Data := sha1.Sum([]byte(md5Data[:]))
+	conf.Password = hex.EncodeToString(sha1Data[:])
+	fmt.Println("是否开启分类功能(y/n)")
+	tmp := "n"
+	fmt.Scanln(&tmp)
+	if tmp == "y" {
+		conf.UseCategory = true
+	}
+	fmt.Println("======================")
+	fmt.Println("数据库设置")
+	fmt.Println("======================")
+	fmt.Println("选择数据库驱动")
+	fmt.Println("1.mysql")
+	fmt.Println("2.postgreSQL")
+	fmt.Scanln(&tmp)
+	if tmp == "2" {
+		conf.Db.Driver = "postgres"
+	} else {
+		conf.Db.Driver = "mysql"
+	}
+	fmt.Println("数据库用户名(root)")
+	fmt.Scanln(&conf.Db.Username)
+	if conf.Db.Username == "" {
+		conf.Db.Username = "root"
+	}
+	fmt.Println("数据库密码")
+	fmt.Scanln(&conf.Db.Password)
+	fmt.Println("数据库地址(localhost)")
+	fmt.Scanln(&conf.Db.Address)
+	if conf.Db.Address == "" {
+		conf.Db.Address = "localhost"
+	}
+	fmt.Println("数据库端口(3306)")
+	fmt.Scanln(&conf.Db.Port)
+	if conf.Db.Port == "" {
+		conf.Db.Port = "3306"
+	}
+	fmt.Println("数据库名(goblog)")
+	fmt.Scanln(&conf.Db.Dbname)
+	if conf.Db.Dbname == "" {
+		conf.Db.Dbname = "goblog"
+	}
+
+	conf.DataDir = "data"
+	conf.Mode = "release"
+	core.Conf = &conf
+	return core.SaveConf()
 }
