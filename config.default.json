@@ -5,6 +5,7 @@
   "useCategory": true,
   "dataDir":"data",
   "database":{
+    "driver":"mysql",
     "username":"root",
     "password":"",
     "dbname":"goblog",
