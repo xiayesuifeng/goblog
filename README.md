@@ -32,7 +32,7 @@
 - [X] 删除分类
 - [ ] 插件机制
 
-## 一键部署
+## 快速部署
 
 > 下载
 ```
@@ -48,31 +48,50 @@ mv build/goblog ./
 ./goblog -i
 ```
 
-## 编译
+> 后端启动
 
+```
+goblog -p 20181
+```
+
+> caddy配置实例
+
+```
+your {
+    root /your/path/goblog-web
+    gzip
+    
+    rewrite {
+        if {path} not_match ^/api
+        to {path} {path} /
+    }
+    proxy /api localhost:20181
+}
+```
+
+## 编译安装
+
+### 编译
+> 前端
+```
+git clone https://gitlab.com/xiayesuifeng/goblog-web.git goblog
+cd goblog
+npm install
+npm build
+```
+> 后端
 ```
 go get gitlab.com/xiayesuifeng/goblog
 go build -ldflags "-s -w" gitlab.com/xiayesuifeng/goblog
 ```
 
-## 配置
+### 配置
 
-> 前端
-
-```
-git clone https://gitlab.com/xiayesuifeng/goblog-web.git
-npm install
-npm build
+```bash
+cp $(go env GOPATH)/src/gitlab.com/xiayesuifeng/goblog/config.json ./
 ```
 
-> 后端
-
-```
-cp goblog goblog-web
-wget -O goblog-web/config.json https://gitlab.com/xiayesuifeng/goblog/raw/master/config.default.json
-```
-
-> config.json
+> config.json详解
 
 ```
 {
@@ -94,28 +113,6 @@ wget -O goblog-web/config.json https://gitlab.com/xiayesuifeng/goblog/raw/master
     "password": "",
     "host": ""
   }
-}
-```
-
-> 后端启动
-
-```
-cd goblog-web
-goblog -p 20181
-```
-
-> caddy配置实例
-
-```
-your {
-    root /your/path/goblog-web
-    gzip
-    
-    rewrite {
-        if {path} not_match ^/api
-        to {path} {path} /
-    }
-    proxy /api localhost:20181
 }
 ```
 
