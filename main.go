@@ -100,6 +100,10 @@ func init() {
 		}
 	}
 
+	if _, err := os.Stat(core.Conf.DataDir + "/article"); os.IsNotExist(err) {
+		os.MkdirAll(core.Conf.DataDir+"/article", 0755)
+	}
+
 	gin.SetMode(core.Conf.Mode)
 
 	if !core.Conf.UseCategory {
