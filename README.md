@@ -7,6 +7,9 @@
 [![GoDoc](https://godoc.org/gitlab.com/xiayesuifeng/goblog?status.svg)](https://godoc.org/gitlab.com/xiayesuifeng/goblog)
 [![Sourcegraph](https://sourcegraph.com/gitlab.com/xiayesuifeng/goblog/-/badge.svg)](https://sourcegraph.com/gitlab.com/xiayesuifeng/goblog)
 
+## 博客预览
+[夏叶随风](https://blog.firerain.me)
+
 ## 前端
 
 [goblog-web](https://gitlab.com/xiayesuifeng/goblog-web.git)
@@ -79,6 +82,7 @@ wget -O goblog-web/config.json https://gitlab.com/xiayesuifeng/goblog/raw/master
   "useCategory": true,      //使用分类功能,不使用分类改为false
   "dataDir":"data",         //数据存放路径,当前为goblog运行路径下的data下，用于存储article和图片等
   "database":{              //数据库信息(暂只支持mysql,敬请期待别的数据库支持)
+    "driver":"mysql",       //数据库驱动(支持mysql与portgres)
     "username":"root",      //数据库用户名
     "password":"",          //数据库密码
     "dbname":"goblog",      //数据库名(需要手动创建)
@@ -109,7 +113,7 @@ your {
     
     rewrite {
         if {path} not_match ^/api
-        to {path} {path} /index.html
+        to {path} {path} /
     }
     proxy /api localhost:20181
 }
