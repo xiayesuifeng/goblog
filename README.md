@@ -18,7 +18,7 @@
 
 现已使用 [gin](https://github.com/gin-gonic/gin) , [gorm](https://github.com/jinzhu/gorm) , [gin-sessions](https://github.com/gin-contrib/sessions) 进行后端重构，前端使用react重构，使用axios和后端 API 进行交互。
 
-- [ ] 一键部署(80%)
+- [X] 一键部署
 - [ ] 信息修改(后端已完成)
 - [X] 架构搭建
 - [X] 登录
@@ -32,13 +32,18 @@
 - [X] 删除分类
 - [ ] 插件机制
 
+## 插件列表
+- [ ]评论
+- [ ]打赏 
+- [ ]RSS订阅
+
 ## 快速部署
 
 > 下载
 ```
 wget https://gitlab.com/xiayesuifeng/goblog-web/builds/artifacts/master/download?job=build-web -O web.zip
 unzip web.zip
-wget https://gitlab.com/xiayesuifeng/goblog/builds/artifacts/2.1.0/download?job=build-goblog -O goblog.zip
+wget https://gitlab.com/xiayesuifeng/goblog/builds/artifacts/2.1.1/download?job=build-goblog -O goblog.zip
 unzip goblog.zip
 mv build/goblog ./
 ```
