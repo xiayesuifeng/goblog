@@ -49,7 +49,7 @@ func (a *Article) GetByCategory(ctx *gin.Context) {
 	db := database.Instance()
 	articles := make([]article.Article, 0)
 
-	db.Where("category_id = ?", id).Find(&articles)
+	db.Where("category_id = ?", id).Order("created_at DESC").Find(&articles)
 
 	ctx.JSON(200, gin.H{
 		"code":     0,
@@ -106,7 +106,7 @@ func (a *Article) GetByUuid(ctx *gin.Context) {
 func (a *Article) Gets(ctx *gin.Context) {
 	articles := make([]article.Article, 0)
 	db := database.Instance()
-	db.Find(&articles)
+	db.Order("created_at DESC").Find(&articles)
 
 	ctx.JSON(200, gin.H{
 		"code":     0,

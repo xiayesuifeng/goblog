@@ -13,7 +13,7 @@ func (t *Tag) Get(ctx *gin.Context) {
 	db := database.Instance()
 	articles := make([]article.Article, 0)
 
-	db.Find(&articles).Where("tag", ctx.Param("tag"))
+	db.Order("created_at DESC").Find(&articles).Where("tag", ctx.Param("tag"))
 
 	ctx.JSON(200, gin.H{
 		"code":     0,
