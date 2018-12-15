@@ -22,10 +22,7 @@ func (a *Admin) Login(ctx *gin.Context) {
 	data := Data{}
 
 	if err := ctx.ShouldBind(&data); err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "password is null",
-		})
+		ctx.JSON(200, core.FailResult("password is null"))
 		return
 	}
 
@@ -39,14 +36,9 @@ func (a *Admin) Login(ctx *gin.Context) {
 		session.Set("login", true)
 		session.Save()
 
-		ctx.JSON(200, gin.H{
-			"code": 0,
-		})
+		ctx.JSON(200, core.SuccessResult())
 	} else {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "password errors",
-		})
+		ctx.JSON(200, core.FailResult("password errors"))
 	}
 }
 
@@ -57,14 +49,9 @@ func (a *Admin) Logout(ctx *gin.Context) {
 	if login != nil {
 		session.Set("login", nil)
 		session.Save()
-		ctx.JSON(200, gin.H{
-			"code": 0,
-		})
+		ctx.JSON(200, core.SuccessResult())
 	} else {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "no login",
-		})
+		ctx.JSON(200, core.Result(core.ResultUnauthorizedCode, "no login"))
 	}
 }
 
@@ -92,15 +79,9 @@ func (a *Admin) PatchInfo(ctx *gin.Context) {
 	data := Data{}
 
 	if err := ctx.ShouldBind(&data); err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": err.Error(),
-		})
+		ctx.JSON(200, core.FailResult(err.Error()))
 	} else if data.Name == "" && data.UseCategory == nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "need name or useCategory",
-		})
+		ctx.JSON(200, core.FailResult("need name or useCategory"))
 	} else {
 		if data.Name != "" {
 			core.Conf.Name = data.Name
@@ -111,14 +92,9 @@ func (a *Admin) PatchInfo(ctx *gin.Context) {
 		}
 
 		if err := core.SaveConf(); err != nil {
-			ctx.JSON(200, gin.H{
-				"code":    100,
-				"message": err.Error(),
-			})
+			ctx.JSON(200, core.FailResult(err.Error()))
 		} else {
-			ctx.JSON(200, gin.H{
-				"code": 0,
-			})
+			ctx.JSON(200, core.SuccessResult())
 		}
 	}
 }
@@ -130,25 +106,17 @@ func (a *Admin) GetLogo(ctx *gin.Context) {
 func (a *Admin) PutLogo(ctx *gin.Context) {
 	logo, _, err := ctx.Request.FormFile("logo")
 	if err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": err.Error(),
-		})
+		ctx.JSON(200, core.FailResult(err.Error()))
 	} else {
 		file, err := os.Create(core.Conf.DataDir + "/logo")
 		if err != nil {
-			ctx.JSON(200, gin.H{
-				"code":    105,
-				"message": err.Error(),
-			})
+			ctx.JSON(200, core.FailResult(err.Error()))
 			return
 		}
 
 		defer file.Close()
 
 		io.Copy(file, logo)
-		ctx.JSON(200, gin.H{
-			"code": 0,
-		})
+		ctx.JSON(200, core.SuccessResult())
 	}
 }

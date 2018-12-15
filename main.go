@@ -124,10 +124,7 @@ func loginMiddleware(ctx *gin.Context) {
 
 	login := session.Get("login")
 	if login == nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "unauthorized",
-		})
+		ctx.JSON(200, core.Result(core.ResultUnauthorizedCode, "unauthorized"))
 		ctx.Abort()
 	}
 }

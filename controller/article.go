@@ -17,10 +17,7 @@ func (a *Article) Get(ctx *gin.Context) {
 	param := ctx.Param("id")
 	id, err := strconv.Atoi(param)
 	if err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "id must integer",
-		})
+		ctx.JSON(200, core.FailResult("id must integer"))
 		return
 	}
 
@@ -29,20 +26,14 @@ func (a *Article) Get(ctx *gin.Context) {
 
 	db.First(&article, id)
 
-	ctx.JSON(200, gin.H{
-		"code":    0,
-		"article": article,
-	})
+	ctx.JSON(200, core.SuccessDataResult("article", article))
 }
 
 func (a *Article) GetByCategory(ctx *gin.Context) {
 	param := ctx.Param("category_id")
 	id, err := strconv.Atoi(param)
 	if err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "id must integer",
-		})
+		ctx.JSON(200, core.FailResult("id must integer"))
 		return
 	}
 
@@ -51,10 +42,7 @@ func (a *Article) GetByCategory(ctx *gin.Context) {
 
 	db.Where("category_id = ?", id).Order("created_at DESC").Find(&articles)
 
-	ctx.JSON(200, gin.H{
-		"code":     0,
-		"articles": articles,
-	})
+	ctx.JSON(200, core.SuccessDataResult("articles", articles))
 }
 func (a *Article) GetByUuid(ctx *gin.Context) {
 	uuid := ctx.Param("uuid")
@@ -62,10 +50,7 @@ func (a *Article) GetByUuid(ctx *gin.Context) {
 
 	md, err := ioutil.ReadFile("data/article/" + uuid + ".md")
 	if err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "uuid not found",
-		})
+		ctx.JSON(200, core.FailResult("uuid not found"))
 		return
 	}
 
@@ -76,30 +61,18 @@ func (a *Article) GetByUuid(ctx *gin.Context) {
 			tmp = tmp[:100]
 		}
 		html := blackfriday.MarkdownBasic([]byte(string(tmp)))
-		ctx.JSON(200, gin.H{
-			"code": 0,
-			"html": string(html),
-		})
+		ctx.JSON(200, core.SuccessDataResult("html", string(html)))
 	case "description_md":
 		tmp := []rune(string(md))
 		if len(tmp) > 100 {
 			tmp = tmp[:100]
 		}
-		ctx.JSON(200, gin.H{
-			"code":     0,
-			"markdown": string(tmp),
-		})
+		ctx.JSON(200, core.SuccessDataResult("markdown", string(tmp)))
 	case "html":
 		html := blackfriday.MarkdownBasic(md)
-		ctx.JSON(200, gin.H{
-			"code": 0,
-			"html": string(html),
-		})
+		ctx.JSON(200, core.SuccessDataResult("html", string(html)))
 	case "markdown":
-		ctx.JSON(200, gin.H{
-			"code":     0,
-			"markdown": string(md),
-		})
+		ctx.JSON(200, core.SuccessDataResult("markdown", string(md)))
 	}
 }
 
@@ -108,10 +81,7 @@ func (a *Article) Gets(ctx *gin.Context) {
 	db := database.Instance()
 	db.Order("created_at DESC").Find(&articles)
 
-	ctx.JSON(200, gin.H{
-		"code":     0,
-		"articles": articles,
-	})
+	ctx.JSON(200, core.SuccessDataResult("articles", articles))
 }
 
 func (a *Article) Post(ctx *gin.Context) {
@@ -121,19 +91,13 @@ func (a *Article) Post(ctx *gin.Context) {
 	}
 
 	if err := ctx.ShouldBind(&data); err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": err.Error(),
-		})
+		ctx.JSON(200, core.FailResult(err.Error()))
 		return
 	}
 
 	if core.Conf.UseCategory {
 		if data.CategoryId == 0 {
-			ctx.JSON(200, gin.H{
-				"code":    100,
-				"message": "category_id must exist",
-			})
+			ctx.JSON(200, core.FailResult("category_id must exist"))
 			return
 		}
 	} else {
@@ -141,14 +105,9 @@ func (a *Article) Post(ctx *gin.Context) {
 	}
 
 	if err := article.AddArticle(data.Title, data.Tag, data.CategoryId, data.Context); err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": err.Error(),
-		})
+		ctx.JSON(200, core.FailResult(err.Error()))
 	} else {
-		ctx.JSON(200, gin.H{
-			"code": 0,
-		})
+		ctx.JSON(200, core.SuccessResult())
 	}
 }
 
@@ -156,10 +115,7 @@ func (a *Article) Put(ctx *gin.Context) {
 	param := ctx.Param("id")
 	id, err := strconv.Atoi(param)
 	if err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "id must integer",
-		})
+		ctx.JSON(200, core.FailResult("id must integer"))
 	}
 
 	var data struct {
@@ -168,19 +124,13 @@ func (a *Article) Put(ctx *gin.Context) {
 	}
 
 	if err := ctx.ShouldBind(&data); err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": err.Error(),
-		})
+		ctx.JSON(200, core.FailResult(err.Error()))
 		return
 	}
 
 	if core.Conf.UseCategory {
 		if data.CategoryId == 0 {
-			ctx.JSON(200, gin.H{
-				"code":    100,
-				"message": "category_id must exist",
-			})
+			ctx.JSON(200, core.FailResult("category_id must exist"))
 			return
 		}
 	} else {
@@ -188,14 +138,9 @@ func (a *Article) Put(ctx *gin.Context) {
 	}
 
 	if err := article.EditArticle(uint(id), data.CategoryId, data.Title, data.Tag, data.Context); err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": err.Error(),
-		})
+		ctx.JSON(200, core.FailResult(err.Error()))
 	} else {
-		ctx.JSON(200, gin.H{
-			"code": 0,
-		})
+		ctx.JSON(200, core.SuccessResult())
 	}
 }
 
@@ -203,21 +148,13 @@ func (a *Article) Delete(ctx *gin.Context) {
 	param := ctx.Param("id")
 	id, err := strconv.Atoi(param)
 	if err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": "id must integer",
-		})
+		ctx.JSON(200, core.FailResult("id must integer"))
 		return
 	}
 
 	if err := article.DeleteArticle(id); err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": err.Error(),
-		})
+		ctx.JSON(200, core.FailResult(err.Error()))
 	} else {
-		ctx.JSON(200, gin.H{
-			"code": 0,
-		})
+		ctx.JSON(200, core.SuccessResult())
 	}
 }

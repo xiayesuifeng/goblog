@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"gitlab.com/xiayesuifeng/goblog/article"
+	"gitlab.com/xiayesuifeng/goblog/core"
 	"gitlab.com/xiayesuifeng/goblog/database"
 )
 
@@ -15,20 +16,15 @@ func (t *Tag) Get(ctx *gin.Context) {
 
 	db.Order("created_at DESC").Find(&articles).Where("tag", ctx.Param("tag"))
 
-	ctx.JSON(200, gin.H{
-		"code":     0,
-		"articles": articles,
-	})
+	ctx.JSON(200, core.SuccessDataResult("articles", articles))
+
 }
 
 func (t *Tag) Gets(ctx *gin.Context) {
 	db := database.Instance()
 	rows, err := db.Table("articles").Select("DISTINCT tag").Rows()
 	if err != nil {
-		ctx.JSON(200, gin.H{
-			"code":    100,
-			"message": err.Error(),
-		})
+		ctx.JSON(200, core.FailResult(err.Error()))
 		return
 	}
 
@@ -40,8 +36,5 @@ func (t *Tag) Gets(ctx *gin.Context) {
 		tags = append(tags, tag)
 	}
 
-	ctx.JSON(200, gin.H{
-		"code": 0,
-		"tags": tags,
-	})
+	ctx.JSON(200, core.SuccessDataResult("tags", tags))
 }
