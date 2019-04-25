@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/satori/go.uuid"
 	"gitlab.com/xiayesuifeng/goblog/core"
 	"io"
 	"os"
@@ -119,4 +120,38 @@ func (a *Admin) PutLogo(ctx *gin.Context) {
 		io.Copy(file, logo)
 		ctx.JSON(200, core.SuccessResult())
 	}
+}
+
+func (a *Admin) GetAssets(ctx *gin.Context) {
+	uuid := ctx.Param("uuid")
+	ctx.File(core.Conf.DataDir + "/assets/" + uuid)
+}
+
+func (a *Admin) PutAssets(ctx *gin.Context) {
+	assets, _, err := ctx.Request.FormFile("assets")
+	if err != nil {
+		ctx.JSON(200, core.FailResult(err.Error()))
+	} else {
+		uuid := a.GetAssetsUuid()
+		file, err := os.Create(core.Conf.DataDir + "/assets/" + uuid)
+		if err != nil {
+			ctx.JSON(200, core.FailResult(err.Error()))
+			return
+		}
+
+		defer file.Close()
+
+		io.Copy(file, assets)
+		ctx.JSON(200, core.SuccessDataResult("path", "/api/assets/"+uuid))
+	}
+}
+
+func (a *Admin) GetAssetsUuid() string {
+	if uuid, err := uuid.NewV4(); err == nil {
+		if _, err := os.Stat(core.Conf.DataDir + "/assets/" + uuid.String()); os.IsNotExist(err) {
+			return uuid.String()
+		}
+	}
+
+	return a.GetAssetsUuid()
 }

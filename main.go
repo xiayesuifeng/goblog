@@ -41,6 +41,8 @@ func main() {
 		apiRouter.PATCH("/info", loginMiddleware, adminC.PatchInfo)
 		apiRouter.GET("/logo", adminC.GetLogo)
 		apiRouter.PUT("/logo", loginMiddleware, adminC.PutLogo)
+		apiRouter.GET("/assets/:uuid", adminC.GetAssets)
+		apiRouter.PUT("/assets", loginMiddleware, adminC.PutAssets)
 	}
 
 	{
@@ -102,6 +104,10 @@ func init() {
 
 	if _, err := os.Stat(core.Conf.DataDir + "/article"); os.IsNotExist(err) {
 		os.MkdirAll(core.Conf.DataDir+"/article", 0755)
+	}
+
+	if _, err := os.Stat(core.Conf.DataDir + "/assets"); os.IsNotExist(err) {
+		os.MkdirAll(core.Conf.DataDir+"/assets", 0755)
 	}
 
 	gin.SetMode(core.Conf.Mode)
