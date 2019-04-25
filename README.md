@@ -45,7 +45,7 @@
 ```
 wget https://gitlab.com/xiayesuifeng/goblog-web/builds/artifacts/master/download?job=build-web -O web.zip
 unzip web.zip
-wget https://gitlab.com/xiayesuifeng/goblog/builds/artifacts/2.2.0/download?job=build-goblog -O goblog.zip
+wget https://gitlab.com/xiayesuifeng/goblog/builds/artifacts/2.2.2/download?job=build-goblog -O goblog.zip
 unzip goblog.zip
 mv build/goblog ./
 ```
