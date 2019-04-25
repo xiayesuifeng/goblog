@@ -14,7 +14,7 @@ func (t *Tag) Get(ctx *gin.Context) {
 	db := database.Instance()
 	articles := make([]article.Article, 0)
 
-	db.Order("created_at DESC").Find(&articles).Where("tag", ctx.Param("tag"))
+	db.Order("created_at DESC").Where("tag = ?", ctx.Param("tag")).Find(&articles)
 
 	ctx.JSON(200, core.SuccessDataResult("articles", articles))
 
