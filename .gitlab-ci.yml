@@ -1,7 +1,7 @@
-image: base/devel
+image: archlinux/base
 
 before_script:
-  - pacman -Sy --noconfirm go git
+  - pacman -Sy --noconfirm base-devel go git
 
 stages:
   - build
