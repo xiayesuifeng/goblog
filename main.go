@@ -14,6 +14,7 @@ import (
 	"gitlab.com/xiayesuifeng/goblog/controller"
 	"gitlab.com/xiayesuifeng/goblog/core"
 	"gitlab.com/xiayesuifeng/goblog/database"
+	"gitlab.com/xiayesuifeng/goblog/plugins"
 	"log"
 	"os"
 	"strconv"
@@ -71,6 +72,8 @@ func main() {
 		apiRouter.DELETE("/article/:id", loginMiddleware, articleC.Delete)
 	}
 
+	plugins.InitRouters(apiRouter)
+
 	router.Run(":" + strconv.Itoa(*port))
 }
 
@@ -123,6 +126,9 @@ func init() {
 		db.Model(&article.Article{}).Updates(article.Article{CategoryId: tmp.ID})
 		core.Conf.OtherCategoryId = tmp.ID
 	}
+
+	plugins.InitPlugins(loginMiddleware)
+	plugins.InitDatabases()
 }
 
 func loginMiddleware(ctx *gin.Context) {
