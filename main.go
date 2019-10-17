@@ -15,6 +15,7 @@ import (
 	"gitlab.com/xiayesuifeng/goblog/core"
 	"gitlab.com/xiayesuifeng/goblog/database"
 	"gitlab.com/xiayesuifeng/goblog/plugins"
+	_ "gitlab.com/xiayesuifeng/goblog/sql-driver"
 	"log"
 	"os"
 	"strconv"
