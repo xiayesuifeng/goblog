@@ -10,7 +10,7 @@ require (
 	github.com/satori/go.uuid v1.2.1-0.20181016184021-8ccf5352a842
 	gitlab.com/xiayesuifeng/goblog/core v0.0.0-20191016164014-8bde16d0021e
 	gitlab.com/xiayesuifeng/goblog/database v0.0.0-20191017171348-bb5c96855b4e
-	gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20191017171348-bb5c96855b4e
+	gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20191017184459-e0c408887326
 )
 
 go 1.13
