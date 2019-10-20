@@ -75,7 +75,9 @@ your {
         if {path} not_match ^/api
         to {path} {path} /
     }
-    proxy /api localhost:20181
+    proxy /api localhost:20181 {
+        transparent
+    }
 }
 ```
 
