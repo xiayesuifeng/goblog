@@ -73,6 +73,11 @@ func main() {
 		apiRouter.DELETE("/article/:id", loginMiddleware, articleC.Delete)
 	}
 
+	{
+		pluginC := &controller.Plugin{}
+		apiRouter.GET("/plugin", pluginC.Gets)
+	}
+
 	plugins.InitRouters(apiRouter)
 
 	router.Run(":" + strconv.Itoa(*port))
