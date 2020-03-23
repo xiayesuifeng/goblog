@@ -9,9 +9,9 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/russross/blackfriday v1.5.2
 	github.com/satori/go.uuid v1.2.1-0.20181016184021-8ccf5352a842
-	gitlab.com/xiayesuifeng/goblog/core v0.0.0-20200323174430-4de95ec4c335
-	gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200323174430-4de95ec4c335
-	gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200323174430-4de95ec4c335
+	gitlab.com/xiayesuifeng/goblog/core v0.0.0-20200323180127-0ab8d2722cb3
+	gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200323180127-0ab8d2722cb3
+	gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200323180127-0ab8d2722cb3
 	golang.org/x/sys v0.0.0-20200321134203-328b4cd54aae // indirect
 )
 
