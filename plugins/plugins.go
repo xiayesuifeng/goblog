@@ -1,6 +1,7 @@
 package plugins
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"gitlab.com/xiayesuifeng/goblog/core"
@@ -105,4 +106,22 @@ func registerPlugin(name string) error {
 	pluginList[name] = pc
 
 	return nil
+}
+
+func GetPluginNameList() []string {
+	list := make([]string, 0)
+
+	for name, _ := range pluginList {
+		list = append(list, name)
+	}
+
+	return list
+}
+
+func GetPlugin(name string) (PluginClient, error) {
+	if p, ok := pluginList[name]; ok {
+		return p, nil
+	} else {
+		return p, errors.New("plugin not found")
+	}
 }
