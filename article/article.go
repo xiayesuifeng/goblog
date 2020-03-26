@@ -5,6 +5,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/satori/go.uuid"
 	"gitlab.com/xiayesuifeng/goblog/category"
+	"gitlab.com/xiayesuifeng/goblog/core"
 	"gitlab.com/xiayesuifeng/goblog/database"
 	"io/ioutil"
 	"os"
@@ -36,7 +37,7 @@ func AddArticle(title, tag string, categoryId uint, context string) error {
 		return err
 	}
 
-	return ioutil.WriteFile("data/article/"+md_uuid+".md", []byte(context), 0644)
+	return ioutil.WriteFile(core.Conf.DataDir+"/article/"+md_uuid+".md", []byte(context), 0644)
 }
 
 func EditArticle(id, categoryId uint, title, tag, context string) error {
@@ -47,7 +48,7 @@ func EditArticle(id, categoryId uint, title, tag, context string) error {
 		return errors.New("article not found")
 	}
 
-	err := ioutil.WriteFile("data/article/"+article.Uuid+".md", []byte(context), 0644)
+	err := ioutil.WriteFile(core.Conf.DataDir+"/article/"+article.Uuid+".md", []byte(context), 0644)
 	if err != nil {
 		return err
 	}
@@ -63,6 +64,6 @@ func DeleteArticle(id int) error {
 		return errors.New("article not found")
 	}
 
-	os.Remove("data/article/" + article.Uuid + ".md")
+	os.Remove(core.Conf.DataDir + "/article/" + article.Uuid + ".md")
 	return db.Unscoped().Delete(&article).Error
 }
