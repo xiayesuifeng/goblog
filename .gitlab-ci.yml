@@ -1,11 +1,31 @@
 image: archlinux/base
 
+variables:
+  GOPATH: $CI_PROJECT_DIR/go
+
 before_script:
-  - pacman -Sy --noconfirm base-devel go git
+  - pacman -Sy --noconfirm base-devel go
+  - mkdir $CI_PROJECT_DIR/src
+  - shopt -s extglob
+  - mv !(src|go) $CI_PROJECT_DIR/src
+  - cd $CI_PROJECT_DIR/src
 
 stages:
-  - build
+  - cache-mod
   - test
+  - build
+
+cache:
+  key: $CI_COMMIT_SHA
+  paths:
+    - $CI_PROJECT_DIR/go/pkg/mod
+
+cache-mod:
+  script:
+    - go get ./...
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/go/pkg/mod
 
 build-goblog:
   stage: build
@@ -15,12 +35,20 @@ build-goblog:
     - cp goblog $CI_PROJECT_DIR/build
 
   only:
-      - tags
+    - tags
 
   artifacts:
     paths:
       - $CI_PROJECT_DIR/build/goblog
 
+build-plugins:
+  stage: build
+  trigger: xiayesuifeng/goblog-plugins
+
 test:
+  cache: {}
   script:
     - go build
+
+  except:
+    - tags
