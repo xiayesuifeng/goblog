@@ -27,6 +27,9 @@ cache-mod:
     paths:
       - $CI_PROJECT_DIR/go/pkg/mod
 
+  only:
+    - tags
+
 build-goblog:
   stage: build
   script:
@@ -44,6 +47,9 @@ build-goblog:
 build-plugins:
   stage: build
   trigger: xiayesuifeng/goblog-plugins
+
+  only:
+    - tags
 
 test:
   cache: {}
