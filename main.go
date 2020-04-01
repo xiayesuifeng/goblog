@@ -22,6 +22,7 @@ import (
 )
 
 var (
+	backup  = flag.Bool("b", false, "backup goblog")
 	port    = flag.Int("p", 8080, "port")
 	install = flag.Bool("i", false, "install goblog")
 	help    = flag.Bool("h", false, "help")
@@ -99,10 +100,6 @@ func init() {
 		log.Panicln(err)
 	}
 
-	db := database.Instance()
-	db.AutoMigrate(&category.Category{})
-	db.AutoMigrate(&article.Article{})
-
 	if _, err := os.Stat(core.Conf.DataDir); err != nil {
 		if os.IsNotExist(err) {
 			os.MkdirAll(core.Conf.DataDir, 0755)
@@ -118,6 +115,17 @@ func init() {
 	if _, err := os.Stat(core.Conf.DataDir + "/assets"); os.IsNotExist(err) {
 		os.MkdirAll(core.Conf.DataDir+"/assets", 0755)
 	}
+
+	if *backup {
+		if err := core.Backup(); err != nil {
+			log.Println(err)
+		}
+		os.Exit(0)
+	}
+
+	db := database.Instance()
+	db.AutoMigrate(&category.Category{})
+	db.AutoMigrate(&article.Article{})
 
 	gin.SetMode(core.Conf.Mode)
 
