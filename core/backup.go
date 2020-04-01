@@ -7,6 +7,22 @@ import (
 	"os/exec"
 )
 
+func DumpDatabase() error {
+	if Conf.Db.Driver == "mysql" {
+		err := DumpMysqlDatabase()
+		if err != nil {
+			return err
+		}
+	} else if Conf.Db.Driver == "postgres" {
+		err := DumpPostgresDatabase()
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func DumpMysqlDatabase() error {
 	path, err := exec.LookPath("mysqldump")
 	if err != nil {
