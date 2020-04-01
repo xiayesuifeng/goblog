@@ -86,6 +86,11 @@ func main() {
 
 func init() {
 	flag.Parse()
+	if *help {
+		flag.Usage()
+		os.Exit(0)
+	}
+
 	if *install {
 		log.Println(installGoBlog())
 		os.Exit(0)
