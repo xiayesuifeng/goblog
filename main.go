@@ -23,6 +23,7 @@ import (
 
 var (
 	backup  = flag.Bool("b", false, "backup goblog")
+	restore = flag.String("r", "", "restore goblog backup file")
 	port    = flag.Int("p", 8080, "port")
 	install = flag.Bool("i", false, "install goblog")
 	help    = flag.Bool("h", false, "help")
@@ -96,6 +97,33 @@ func init() {
 		os.Exit(0)
 	}
 
+	if *restore != "" {
+		fmt.Println("温馨提示：使用恢复功能为保证数据完整性，请停止运行 GoBlog 后再进行，请在确认后输入Y继续(Y/N):")
+		input := ""
+		if _, err := fmt.Scanln(&input); err != nil {
+			log.Println(err)
+			os.Exit(0)
+		}
+
+		if input != "Y" && input != "y" {
+			os.Exit(0)
+		}
+
+		fmt.Println("是否使用备份中的 DataDir 与 database 覆盖现有配置(Y/N):")
+		if _, err := fmt.Scanln(&input); err != nil {
+			log.Println(err)
+			os.Exit(0)
+		}
+
+		if input == "Y" || input == "y" {
+			if err := core.Restore(*restore, true); err != nil {
+				log.Println(err)
+			}
+			log.Println("备份已成功恢复")
+			os.Exit(0)
+		}
+	}
+
 	err := core.ParseConf("config.json")
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -111,6 +139,14 @@ func init() {
 		} else {
 			log.Panicln("data dir create failure")
 		}
+	}
+
+	if *restore != "" {
+		if err := core.Restore(*restore, false); err != nil {
+			log.Println(err)
+		}
+		log.Println("备份已成功恢复")
+		os.Exit(0)
 	}
 
 	if _, err := os.Stat(core.Conf.DataDir + "/article"); os.IsNotExist(err) {
