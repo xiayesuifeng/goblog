@@ -103,6 +103,9 @@ func Unzip(target, out string) error {
 	}
 
 	for _, file := range r.File {
+		if file.FileInfo().Name() == "config.json" {
+			continue
+		}
 		log.Println("DeCompressing", file.Name)
 
 		path := filepath.Join(out, file.Name)
