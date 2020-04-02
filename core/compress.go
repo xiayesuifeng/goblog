@@ -2,6 +2,8 @@ package core
 
 import (
 	"archive/zip"
+	"encoding/json"
+	"errors"
 	"io"
 	"log"
 	"os"
@@ -130,4 +132,31 @@ func Unzip(target, out string) error {
 	}
 
 	return nil
+}
+
+func GetConfigForZip(target string) (*Config, error) {
+	r, err := zip.OpenReader(target)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, file := range r.File {
+		if file.FileInfo().Name() == "config.json" {
+			r, err := file.Open()
+			if err != nil {
+				return nil, err
+			}
+			defer r.Close()
+
+			c := &Config{}
+
+			if err = json.NewDecoder(r).Decode(c); err != nil {
+				return nil, err
+			}
+
+			return c, nil
+		}
+	}
+
+	return nil, errors.New("config.json not found")
 }
