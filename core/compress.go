@@ -93,3 +93,41 @@ func addFileToZip(file, targetName string, writer *zip.Writer) error {
 
 	return err
 }
+
+func Unzip(target, out string) error {
+	r, err := zip.OpenReader(target)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range r.File {
+		log.Println("DeCompressing", file.Name)
+
+		path := filepath.Join(out, file.Name)
+
+		if file.FileInfo().IsDir() {
+			if err := os.MkdirAll(path, file.FileInfo().Mode()); err != nil {
+				return err
+			}
+			continue
+		}
+
+		r, err := file.Open()
+		if err != nil {
+			return err
+		}
+		defer r.Close()
+
+		f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, file.FileInfo().Mode())
+		if err != nil {
+			return err
+		}
+		defer f.Close()
+
+		if _, err := io.Copy(f, r); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
