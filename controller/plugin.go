@@ -7,7 +7,7 @@ import (
 )
 
 type Plugin struct {
-	Name          string `json:"name"`
+	PackageName   string `json:"packageName"`
 	PluginName    string `json:"pluginName"`
 	PluginVersion string `json:"pluginVersion"`
 }
@@ -18,7 +18,7 @@ func (Plugin) Gets(ctx *gin.Context) {
 	for _, name := range names {
 		if p, err := plugins.GetPlugin(name); err == nil {
 			list = append(list, Plugin{
-				Name:          name,
+				PackageName:   name,
 				PluginName:    p.GetPluginName(),
 				PluginVersion: p.GetPluginVersion(),
 			})
