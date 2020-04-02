@@ -163,6 +163,8 @@ gitlab.com/xiayesuifeng/goblog/core v0.0.0-20200323180127-0ab8d2722cb3 h1:SnZZUq
 gitlab.com/xiayesuifeng/goblog/core v0.0.0-20200323180127-0ab8d2722cb3/go.mod h1:qWBbLckTG/y5T8+jBFYxXiEBClwhqQY411NroumPqLU=
 gitlab.com/xiayesuifeng/goblog/core v0.0.0-20200401135529-6875932a3388 h1:hGJ4/j/1Lski6QhrCVmV2prM1MBf0YhLikLzoKEnND8=
 gitlab.com/xiayesuifeng/goblog/core v0.0.0-20200401135529-6875932a3388/go.mod h1:qWBbLckTG/y5T8+jBFYxXiEBClwhqQY411NroumPqLU=
+gitlab.com/xiayesuifeng/goblog/core v0.0.0-20200402110851-86549e0c6c96 h1:+nSpMx/OEi70m6bgJGXdYmOytrc4Ai1p86v6D6CIeXs=
+gitlab.com/xiayesuifeng/goblog/core v0.0.0-20200402110851-86549e0c6c96/go.mod h1:qWBbLckTG/y5T8+jBFYxXiEBClwhqQY411NroumPqLU=
 gitlab.com/xiayesuifeng/goblog/database v0.0.0-20191017171348-bb5c96855b4e h1:ylZ4zRoYhbw9Rnz61QHG7xzK3Ur3un4Tb2SL+TMsReo=
 gitlab.com/xiayesuifeng/goblog/database v0.0.0-20191017171348-bb5c96855b4e/go.mod h1:yEKiKQ4GfnZNnyfeJSk9qg801mtA5oy+K+DQbm1lEO8=
 gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200323174430-4de95ec4c335 h1:ajP3nWi+ooCBhu/LI8wwonsKSIJieOOyq04aSmyV11c=
@@ -173,6 +175,10 @@ gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200401135529-6875932a3388 h1:Bl
 gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200401135529-6875932a3388/go.mod h1:yEKiKQ4GfnZNnyfeJSk9qg801mtA5oy+K+DQbm1lEO8=
 gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200401140341-35207b4bcb94 h1:TyUOXEQ4WQXRu77Bh5qLJialUi/FeZzNNpPknYyWK3E=
 gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200401140341-35207b4bcb94/go.mod h1:yEKiKQ4GfnZNnyfeJSk9qg801mtA5oy+K+DQbm1lEO8=
+gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200402110851-86549e0c6c96 h1:DQ8Zhoq2ru4o7skU5JVUmA/fNKuoNuzzufDfdEmpzjs=
+gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200402110851-86549e0c6c96/go.mod h1:yEKiKQ4GfnZNnyfeJSk9qg801mtA5oy+K+DQbm1lEO8=
+gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200402113451-eb5c5b1893cf h1:D63o0u2oGG9Fc5YN45rRw1iaKAEnDIS3luGPx1zP+48=
+gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200402113451-eb5c5b1893cf/go.mod h1:yEKiKQ4GfnZNnyfeJSk9qg801mtA5oy+K+DQbm1lEO8=
 gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200323174430-4de95ec4c335 h1:NAIzuWWmouNHONWloq8+GXeAL/zKFAdzZILsB6srk0k=
 gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200323174430-4de95ec4c335/go.mod h1:aqddt6IliyzFMe8IXoMkIhZEOLCGoX7xWfpCkE8Q8Yw=
 gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200323180127-0ab8d2722cb3 h1:jyneL80vHx/14uyBt8uGnObD2DcIx0UMZYqCQhdbvag=
@@ -181,6 +187,10 @@ gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200401135529-6875932a3388 h1:pKR
 gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200401135529-6875932a3388/go.mod h1:72aX6SxkvK9YG0oOwRZDpmhrJsSAKRY0C6iSnJhJZR4=
 gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200401140341-35207b4bcb94 h1:XULNOz0dVhI7Y4FkpG+mBNp0dVY0H6nqsefsdHjTfnM=
 gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200401140341-35207b4bcb94/go.mod h1:72aX6SxkvK9YG0oOwRZDpmhrJsSAKRY0C6iSnJhJZR4=
+gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200402110851-86549e0c6c96 h1:ElhUjFUgLvN3UBfMhNqkhgOjHjsqRMAfqDtWR+97CLA=
+gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200402110851-86549e0c6c96/go.mod h1:72aX6SxkvK9YG0oOwRZDpmhrJsSAKRY0C6iSnJhJZR4=
+gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200402113451-eb5c5b1893cf h1:XmZ5U8ovVU4OH4dGBK5sbblthqwRhgT33+mvcrdclCQ=
+gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200402113451-eb5c5b1893cf/go.mod h1:72aX6SxkvK9YG0oOwRZDpmhrJsSAKRY0C6iSnJhJZR4=
 go.opencensus.io v0.20.1/go.mod h1:6WKK9ahsWS3RSO+PY9ZHZUfv2irvY6gN279GOPZjmmk=
 golang.org/x/crypto v0.0.0-20180904163835-0709b304e793/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
