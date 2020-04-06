@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/xiayesuifeng/goblog/article"
 	"gitlab.com/xiayesuifeng/goblog/category"
@@ -19,6 +20,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 var (
@@ -81,6 +83,20 @@ func main() {
 	}
 
 	plugins.InitRouters(apiRouter)
+
+	webPath := os.Getenv("GOBLOG_WEB_PATH")
+	if webPath != "" {
+		router.Use(static.Serve("/", static.LocalFile(webPath, false)))
+		router.NoRoute(func(c *gin.Context) {
+			if !strings.Contains(c.Request.RequestURI, "/api") {
+				path := strings.Split(c.Request.URL.Path, "/")
+				if len(path) > 1 {
+					c.File(webPath + "/index.html")
+					return
+				}
+			}
+		})
+	}
 
 	router.Run(":" + strconv.Itoa(*port))
 }
