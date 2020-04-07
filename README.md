@@ -36,10 +36,10 @@
 - [X] 插件机制 (后端已实现)
 
 ## 插件列表 ([插件手动安装教程](https://gitlab.com/xiayesuifeng/goblog-plugins/blob/master/README.md#%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8))
-- [X] 友链 (后端已实现)
+- [X] 友链
 - [ ] 评论
 - [ ] 打赏 
-- [X] RSS订阅 (后端已实现)
+- [X] RSS订阅
 
 ## 快速部署
 
