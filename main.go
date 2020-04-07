@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/xiayesuifeng/goblog/article"
@@ -17,6 +18,7 @@ import (
 	"gitlab.com/xiayesuifeng/goblog/database"
 	"gitlab.com/xiayesuifeng/goblog/plugins"
 	_ "gitlab.com/xiayesuifeng/goblog/sql-driver"
+	"golang.org/x/crypto/acme/autocert"
 	"log"
 	"os"
 	"strconv"
@@ -98,7 +100,15 @@ func main() {
 		})
 	}
 
-	router.Run(":" + strconv.Itoa(*port))
+	if core.Conf.Tls.Enable {
+		log.Fatalln(autotls.RunWithManager(router, &autocert.Manager{
+			Prompt:     autocert.AcceptTOS,
+			HostPolicy: autocert.HostWhitelist(core.Conf.Tls.Domain...),
+			Cache:      autocert.DirCache(core.Conf.DataDir + "/acme"),
+		}))
+	} else {
+		router.Run(":" + strconv.Itoa(*port))
+	}
 }
 
 func init() {
