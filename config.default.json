@@ -16,5 +16,9 @@
     "username":"",
     "password": "",
     "host": ""
+  },
+  "tls": {
+    "enable": false,
+    "domain": ["example.com"]
   }
 }

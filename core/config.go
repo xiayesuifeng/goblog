@@ -16,6 +16,7 @@ type Config struct {
 	DataDir         string   `json:"dataDir"`
 	Db              Database `json:"database"`
 	Smtp            Smtp     `json:"smtp"`
+	Tls             Tls      `json:"tls"`
 }
 
 type Database struct {
@@ -31,6 +32,11 @@ type Smtp struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Host     string `json:"host"`
+}
+
+type Tls struct {
+	Enable bool     `json:"enable"`
+	Domain []string `json:"domain"`
 }
 
 func ParseConf(config string) error {
