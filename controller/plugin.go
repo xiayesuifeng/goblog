@@ -3,26 +3,12 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"gitlab.com/xiayesuifeng/goblog/core"
-	"gitlab.com/xiayesuifeng/goblog/plugins"
+	"gitlab.com/xiayesuifeng/goblog/plugin"
 )
 
 type Plugin struct {
-	PackageName   string `json:"packageName"`
-	PluginName    string `json:"pluginName"`
-	PluginVersion string `json:"pluginVersion"`
 }
 
 func (Plugin) Gets(ctx *gin.Context) {
-	list := make([]Plugin, 0)
-	names := plugins.GetPluginNameList()
-	for _, name := range names {
-		if p, err := plugins.GetPlugin(name); err == nil {
-			list = append(list, Plugin{
-				PackageName:   name,
-				PluginName:    p.GetPluginName(),
-				PluginVersion: p.GetPluginVersion(),
-			})
-		}
-	}
-	ctx.JSON(200, core.SuccessDataResult("plugins", list))
+	ctx.JSON(200, core.SuccessDataResult("plugins", plugin.GetPlugins()))
 }
