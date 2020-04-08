@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"gitlab.com/xiayesuifeng/goblog/core"
+	"gitlab.com/xiayesuifeng/goblog/conf"
 	"gitlab.com/xiayesuifeng/goblog/database"
 	"io/ioutil"
 	"log"
@@ -17,7 +17,7 @@ var pluginServer *PluginServer
 var pluginList = make(map[string]PluginClient)
 
 type PluginServer struct {
-	Config *core.Config
+	Config *conf.Config
 
 	LoginMiddleware func(ctx *gin.Context)
 
@@ -35,7 +35,7 @@ type PluginClient struct {
 func InitPlugins(loginMiddleware func(ctx *gin.Context)) {
 	pluginServer = &PluginServer{}
 
-	pluginServer.Config = core.Conf
+	pluginServer.Config = conf.Conf
 	pluginServer.LoginMiddleware = loginMiddleware
 	pluginServer.DatabaseInstance = database.Instance
 

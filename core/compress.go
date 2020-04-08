@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"encoding/json"
 	"errors"
+	"gitlab.com/xiayesuifeng/goblog/conf"
 	"io"
 	"log"
 	"os"
@@ -68,8 +69,8 @@ func Zip(source, target string) error {
 		return err
 	}
 
-	if _, err := os.Stat(Conf.DataDir + "/backup/database.sql"); err == nil {
-		if err := addFileToZip(Conf.DataDir+"/backup/database.sql", "database.sql", writer); err != nil {
+	if _, err := os.Stat(conf.Conf.DataDir + "/backup/database.sql"); err == nil {
+		if err := addFileToZip(conf.Conf.DataDir+"/backup/database.sql", "database.sql", writer); err != nil {
 			return err
 		}
 	}
@@ -137,7 +138,7 @@ func Unzip(target, out string) error {
 	return nil
 }
 
-func GetConfigForZip(target string) (*Config, error) {
+func GetConfigForZip(target string) (*conf.Config, error) {
 	r, err := zip.OpenReader(target)
 	if err != nil {
 		return nil, err
@@ -151,7 +152,7 @@ func GetConfigForZip(target string) (*Config, error) {
 			}
 			defer r.Close()
 
-			c := &Config{}
+			c := &conf.Config{}
 
 			if err = json.NewDecoder(r).Decode(c); err != nil {
 				return nil, err

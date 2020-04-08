@@ -11,7 +11,7 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/russross/blackfriday v1.5.2
 	github.com/satori/go.uuid v1.2.1-0.20181016184021-8ccf5352a842
-	gitlab.com/xiayesuifeng/goblog/core v0.0.0-20200407190401-b55724623abb
+	gitlab.com/xiayesuifeng/goblog/conf v0.0.0-20200408103718-8130dfb12d4c
 	gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200407190401-b55724623abb
 	gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200407190401-b55724623abb
 	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd

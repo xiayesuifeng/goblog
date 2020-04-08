@@ -2,6 +2,7 @@ package core
 
 import (
 	"errors"
+	"gitlab.com/xiayesuifeng/goblog/conf"
 	"log"
 	"os"
 	"os/exec"
@@ -14,16 +15,16 @@ func Restore(file string, useOldConfig bool) error {
 	}
 
 	if !useOldConfig {
-		config.DataDir = Conf.DataDir
-		config.Db = Conf.Db
+		config.DataDir = conf.Conf.DataDir
+		config.Db = conf.Conf.Db
 	}
 
-	Conf = config
-	if err := SaveConf(); err != nil {
+	conf.Conf = config
+	if err := conf.SaveConf(); err != nil {
 		return err
 	}
 
-	if err := Unzip(file, Conf.DataDir); err != nil {
+	if err := Unzip(file, conf.Conf.DataDir); err != nil {
 		return err
 	}
 
@@ -32,17 +33,17 @@ func Restore(file string, useOldConfig bool) error {
 }
 
 func RestoreDatabase() error {
-	if Conf.Db.Driver == "mysql" {
+	if conf.Conf.Db.Driver == "mysql" {
 		if err := RestoreMysqlDatabase(); err != nil {
 			return err
 		}
-	} else if Conf.Db.Driver == "postgres" {
+	} else if conf.Conf.Db.Driver == "postgres" {
 		if err := RestorePostgresDatabase(); err != nil {
 			return err
 		}
 	}
 
-	os.Remove(Conf.DataDir + "/database.sql")
+	os.Remove(conf.Conf.DataDir + "/database.sql")
 
 	return nil
 }
@@ -53,13 +54,13 @@ func RestoreMysqlDatabase() error {
 		return err
 	}
 
-	sql, err := os.Open(Conf.DataDir + "/database.sql")
+	sql, err := os.Open(conf.Conf.DataDir + "/database.sql")
 	if err != nil {
 		return err
 	}
 	defer sql.Close()
 
-	db := Conf.Db
+	db := conf.Conf.Db
 
 	cmd := exec.Command(path, "-h", db.Address, "-P", db.Port, "-u", db.Username, "-p"+db.Password, db.Dbname)
 	cmd.Stdin = sql
@@ -78,9 +79,9 @@ func RestorePostgresDatabase() error {
 		return err
 	}
 
-	db := Conf.Db
+	db := conf.Conf.Db
 
-	cmd := exec.Command(path, "-h", db.Address, "-p", db.Port, "-U", db.Username, "-d", db.Dbname, Conf.DataDir+"/backup/database.sql")
+	cmd := exec.Command(path, "-h", db.Address, "-p", db.Port, "-U", db.Username, "-d", db.Dbname, conf.Conf.DataDir+"/backup/database.sql")
 	cmd.Env = os.Environ()
 	cmd.Env = append(cmd.Env, "PGPASSWORD="+db.Password)
 

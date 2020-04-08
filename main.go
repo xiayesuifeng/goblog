@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gitlab.com/xiayesuifeng/goblog/article"
 	"gitlab.com/xiayesuifeng/goblog/category"
+	"gitlab.com/xiayesuifeng/goblog/conf"
 	"gitlab.com/xiayesuifeng/goblog/controller"
 	"gitlab.com/xiayesuifeng/goblog/core"
 	"gitlab.com/xiayesuifeng/goblog/database"
@@ -100,11 +101,11 @@ func main() {
 		})
 	}
 
-	if core.Conf.Tls.Enable {
+	if conf.Conf.Tls.Enable {
 		log.Fatalln(autotls.RunWithManager(router, &autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
-			HostPolicy: autocert.HostWhitelist(core.Conf.Tls.Domain...),
-			Cache:      autocert.DirCache(core.Conf.DataDir + "/acme"),
+			HostPolicy: autocert.HostWhitelist(conf.Conf.Tls.Domain...),
+			Cache:      autocert.DirCache(conf.Conf.DataDir + "/acme"),
 		}))
 	} else {
 		router.Run(":" + strconv.Itoa(*port))
@@ -150,7 +151,7 @@ func init() {
 		}
 	}
 
-	err := core.ParseConf("config.json")
+	err := conf.ParseConf("config.json")
 	if err != nil {
 		if os.IsNotExist(err) {
 			log.Println("please config config.json")
@@ -159,9 +160,9 @@ func init() {
 		log.Panicln(err)
 	}
 
-	if _, err := os.Stat(core.Conf.DataDir); err != nil {
+	if _, err := os.Stat(conf.Conf.DataDir); err != nil {
 		if os.IsNotExist(err) {
-			os.MkdirAll(core.Conf.DataDir, 0755)
+			os.MkdirAll(conf.Conf.DataDir, 0755)
 		} else {
 			log.Panicln("data dir create failure")
 		}
@@ -175,12 +176,12 @@ func init() {
 		os.Exit(0)
 	}
 
-	if _, err := os.Stat(core.Conf.DataDir + "/article"); os.IsNotExist(err) {
-		os.MkdirAll(core.Conf.DataDir+"/article", 0755)
+	if _, err := os.Stat(conf.Conf.DataDir + "/article"); os.IsNotExist(err) {
+		os.MkdirAll(conf.Conf.DataDir+"/article", 0755)
 	}
 
-	if _, err := os.Stat(core.Conf.DataDir + "/assets"); os.IsNotExist(err) {
-		os.MkdirAll(core.Conf.DataDir+"/assets", 0755)
+	if _, err := os.Stat(conf.Conf.DataDir + "/assets"); os.IsNotExist(err) {
+		os.MkdirAll(conf.Conf.DataDir+"/assets", 0755)
 	}
 
 	if *backup {
@@ -194,9 +195,9 @@ func init() {
 	db.AutoMigrate(&category.Category{})
 	db.AutoMigrate(&article.Article{})
 
-	gin.SetMode(core.Conf.Mode)
+	gin.SetMode(conf.Conf.Mode)
 
-	if !core.Conf.UseCategory {
+	if !conf.Conf.UseCategory {
 		tmp := category.Category{Name: "other"}
 		if db.Where(&tmp).First(&tmp).RecordNotFound() {
 			if err := db.Create(&tmp).Error; err != nil {
@@ -205,7 +206,7 @@ func init() {
 		}
 
 		db.Model(&article.Article{}).Updates(article.Article{CategoryId: tmp.ID})
-		core.Conf.OtherCategoryId = tmp.ID
+		conf.Conf.OtherCategoryId = tmp.ID
 	}
 
 	plugins.InitPlugins(loginMiddleware)
@@ -223,22 +224,22 @@ func loginMiddleware(ctx *gin.Context) {
 }
 
 func installGoBlog() error {
-	conf := core.Config{}
+	config := conf.Config{}
 	fmt.Println("======================")
 	fmt.Println("首次运行需要部署一些东西")
 	fmt.Println("======================")
 	fmt.Print("请输入博客名:")
-	fmt.Scanln(&conf.Name)
+	fmt.Scanln(&config.Name)
 	fmt.Print("请输入登录密码:")
-	fmt.Scanln(&conf.Password)
-	md5Data := md5.Sum([]byte(conf.Password))
+	fmt.Scanln(&config.Password)
+	md5Data := md5.Sum([]byte(config.Password))
 	sha1Data := sha1.Sum([]byte(md5Data[:]))
-	conf.Password = hex.EncodeToString(sha1Data[:])
+	config.Password = hex.EncodeToString(sha1Data[:])
 	fmt.Println("是否开启分类功能(y/n)")
 	tmp := "n"
 	fmt.Scanln(&tmp)
 	if tmp == "y" {
-		conf.UseCategory = true
+		config.UseCategory = true
 	}
 	fmt.Println("======================")
 	fmt.Println("数据库设置")
@@ -248,35 +249,35 @@ func installGoBlog() error {
 	fmt.Println("2.postgreSQL")
 	fmt.Scanln(&tmp)
 	if tmp == "2" {
-		conf.Db.Driver = "postgres"
+		config.Db.Driver = "postgres"
 	} else {
-		conf.Db.Driver = "mysql"
+		config.Db.Driver = "mysql"
 	}
 	fmt.Println("数据库用户名(root)")
-	fmt.Scanln(&conf.Db.Username)
-	if conf.Db.Username == "" {
-		conf.Db.Username = "root"
+	fmt.Scanln(&config.Db.Username)
+	if config.Db.Username == "" {
+		config.Db.Username = "root"
 	}
 	fmt.Println("数据库密码")
-	fmt.Scanln(&conf.Db.Password)
+	fmt.Scanln(&config.Db.Password)
 	fmt.Println("数据库地址(localhost)")
-	fmt.Scanln(&conf.Db.Address)
-	if conf.Db.Address == "" {
-		conf.Db.Address = "localhost"
+	fmt.Scanln(&config.Db.Address)
+	if config.Db.Address == "" {
+		config.Db.Address = "localhost"
 	}
 	fmt.Println("数据库端口(3306)")
-	fmt.Scanln(&conf.Db.Port)
-	if conf.Db.Port == "" {
-		conf.Db.Port = "3306"
+	fmt.Scanln(&config.Db.Port)
+	if config.Db.Port == "" {
+		config.Db.Port = "3306"
 	}
 	fmt.Println("数据库名(goblog)")
-	fmt.Scanln(&conf.Db.Dbname)
-	if conf.Db.Dbname == "" {
-		conf.Db.Dbname = "goblog"
+	fmt.Scanln(&config.Db.Dbname)
+	if config.Db.Dbname == "" {
+		config.Db.Dbname = "goblog"
 	}
 
-	conf.DataDir = "data"
-	conf.Mode = "release"
-	core.Conf = &conf
-	return core.SaveConf()
+	config.DataDir = "data"
+	config.Mode = "release"
+	conf.Conf = &config
+	return conf.SaveConf()
 }

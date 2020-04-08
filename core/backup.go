@@ -3,6 +3,7 @@ package core
 import (
 	"errors"
 	"fmt"
+	"gitlab.com/xiayesuifeng/goblog/conf"
 	"io/ioutil"
 	"os"
 	"os/exec"
@@ -20,8 +21,8 @@ func Backup() error {
 		return nil
 	}
 
-	if _, err := os.Stat(Conf.DataDir + "/backup"); os.IsNotExist(err) {
-		os.MkdirAll(Conf.DataDir+"/backup", 0755)
+	if _, err := os.Stat(conf.Conf.DataDir + "/backup"); os.IsNotExist(err) {
+		os.MkdirAll(conf.Conf.DataDir+"/backup", 0755)
 	}
 
 	fmt.Println("Dumping database")
@@ -29,12 +30,12 @@ func Backup() error {
 		return err
 	}
 
-	zipName := Conf.DataDir + time.Now().Format("/backup/Backup-GoBlog-20060102150405.zip")
-	if err := Zip(Conf.DataDir, zipName); err != nil {
+	zipName := conf.Conf.DataDir + time.Now().Format("/backup/Backup-GoBlog-20060102150405.zip")
+	if err := Zip(conf.Conf.DataDir, zipName); err != nil {
 		return err
 	}
 
-	os.Remove(Conf.DataDir + "/backup/database.sql")
+	os.Remove(conf.Conf.DataDir + "/backup/database.sql")
 
 	fmt.Println("Backup save to ", zipName)
 
@@ -42,12 +43,12 @@ func Backup() error {
 }
 
 func DumpDatabase() error {
-	if Conf.Db.Driver == "mysql" {
+	if conf.Conf.Db.Driver == "mysql" {
 		err := DumpMysqlDatabase()
 		if err != nil {
 			return err
 		}
-	} else if Conf.Db.Driver == "postgres" {
+	} else if conf.Conf.Db.Driver == "postgres" {
 		err := DumpPostgresDatabase()
 		if err != nil {
 			return err
@@ -63,7 +64,7 @@ func DumpMysqlDatabase() error {
 		return err
 	}
 
-	db := Conf.Db
+	db := conf.Conf.Db
 
 	cmd := exec.Command(path, "-h", db.Address, "-P", db.Port, "-u", db.Username, "-p"+db.Password, db.Dbname)
 	data, err := cmd.CombinedOutput()
@@ -71,7 +72,7 @@ func DumpMysqlDatabase() error {
 		return errors.New(string(data))
 	}
 
-	return ioutil.WriteFile(Conf.DataDir+"/backup/database.sql", data, 0664)
+	return ioutil.WriteFile(conf.Conf.DataDir+"/backup/database.sql", data, 0664)
 }
 
 func DumpPostgresDatabase() error {
@@ -80,9 +81,9 @@ func DumpPostgresDatabase() error {
 		return err
 	}
 
-	db := Conf.Db
+	db := conf.Conf.Db
 
-	cmd := exec.Command(path, "-h", db.Address, "-p", db.Port, "-U", db.Username, "-f", Conf.DataDir+"/backup/database.sql", db.Dbname)
+	cmd := exec.Command(path, "-h", db.Address, "-p", db.Port, "-U", db.Username, "-f", conf.Conf.DataDir+"/backup/database.sql", db.Dbname)
 	cmd.Env = os.Environ()
 	cmd.Env = append(cmd.Env, "PGPASSWORD="+db.Password)
 

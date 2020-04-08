@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/satori/go.uuid"
+	"gitlab.com/xiayesuifeng/goblog/conf"
 	"gitlab.com/xiayesuifeng/goblog/core"
 	"io"
 	"os"
@@ -33,7 +34,7 @@ func (a *Admin) Login(ctx *gin.Context) {
 	sha1Data := sha1.Sum([]byte(md5Data[:]))
 	passwd := hex.EncodeToString(sha1Data[:])
 
-	if passwd == core.Conf.Password {
+	if passwd == conf.Conf.Password {
 		session.Set("login", true)
 		session.Save()
 
@@ -58,15 +59,15 @@ func (a *Admin) Logout(ctx *gin.Context) {
 
 func (a *Admin) GetInfo(ctx *gin.Context) {
 	logo := "/api/logo"
-	_, err := os.Stat(core.Conf.DataDir + "/logo")
+	_, err := os.Stat(conf.Conf.DataDir + "/logo")
 	if err != nil {
 		if os.IsNotExist(err) {
 			logo = "none"
 		}
 	}
 	ctx.JSON(200, gin.H{
-		"name":        core.Conf.Name,
-		"useCategory": core.Conf.UseCategory,
+		"name":        conf.Conf.Name,
+		"useCategory": conf.Conf.UseCategory,
 		"logo":        logo,
 	})
 }
@@ -85,14 +86,14 @@ func (a *Admin) PatchInfo(ctx *gin.Context) {
 		ctx.JSON(200, core.FailResult("need name or useCategory"))
 	} else {
 		if data.Name != "" {
-			core.Conf.Name = data.Name
+			conf.Conf.Name = data.Name
 		}
 
 		if data.UseCategory != nil {
-			core.Conf.UseCategory = *data.UseCategory
+			conf.Conf.UseCategory = *data.UseCategory
 		}
 
-		if err := core.SaveConf(); err != nil {
+		if err := conf.SaveConf(); err != nil {
 			ctx.JSON(200, core.FailResult(err.Error()))
 		} else {
 			ctx.JSON(200, core.SuccessResult())
@@ -101,7 +102,7 @@ func (a *Admin) PatchInfo(ctx *gin.Context) {
 }
 
 func (a *Admin) GetLogo(ctx *gin.Context) {
-	ctx.File(core.Conf.DataDir + "/logo")
+	ctx.File(conf.Conf.DataDir + "/logo")
 }
 
 func (a *Admin) PutLogo(ctx *gin.Context) {
@@ -109,7 +110,7 @@ func (a *Admin) PutLogo(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(200, core.FailResult(err.Error()))
 	} else {
-		file, err := os.Create(core.Conf.DataDir + "/logo")
+		file, err := os.Create(conf.Conf.DataDir + "/logo")
 		if err != nil {
 			ctx.JSON(200, core.FailResult(err.Error()))
 			return
@@ -124,7 +125,7 @@ func (a *Admin) PutLogo(ctx *gin.Context) {
 
 func (a *Admin) GetAssets(ctx *gin.Context) {
 	uuid := ctx.Param("uuid")
-	ctx.File(core.Conf.DataDir + "/assets/" + uuid)
+	ctx.File(conf.Conf.DataDir + "/assets/" + uuid)
 }
 
 func (a *Admin) PutAssets(ctx *gin.Context) {
@@ -133,7 +134,7 @@ func (a *Admin) PutAssets(ctx *gin.Context) {
 		ctx.JSON(200, core.FailResult(err.Error()))
 	} else {
 		uuid := a.GetAssetsUuid()
-		file, err := os.Create(core.Conf.DataDir + "/assets/" + uuid)
+		file, err := os.Create(conf.Conf.DataDir + "/assets/" + uuid)
 		if err != nil {
 			ctx.JSON(200, core.FailResult(err.Error()))
 			return
@@ -148,7 +149,7 @@ func (a *Admin) PutAssets(ctx *gin.Context) {
 
 func (a *Admin) GetAssetsUuid() string {
 	if uuid, err := uuid.NewV4(); err == nil {
-		if _, err := os.Stat(core.Conf.DataDir + "/assets/" + uuid.String()); os.IsNotExist(err) {
+		if _, err := os.Stat(conf.Conf.DataDir + "/assets/" + uuid.String()); os.IsNotExist(err) {
 			return uuid.String()
 		}
 	}

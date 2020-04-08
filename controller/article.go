@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/russross/blackfriday"
 	"gitlab.com/xiayesuifeng/goblog/article"
+	"gitlab.com/xiayesuifeng/goblog/conf"
 	"gitlab.com/xiayesuifeng/goblog/core"
 	"gitlab.com/xiayesuifeng/goblog/database"
 	"io/ioutil"
@@ -95,13 +96,13 @@ func (a *Article) Post(ctx *gin.Context) {
 		return
 	}
 
-	if core.Conf.UseCategory {
+	if conf.Conf.UseCategory {
 		if data.CategoryId == 0 {
 			ctx.JSON(200, core.FailResult("category_id must exist"))
 			return
 		}
 	} else {
-		data.CategoryId = core.Conf.OtherCategoryId
+		data.CategoryId = conf.Conf.OtherCategoryId
 	}
 
 	if err := article.AddArticle(data.Title, data.Tag, data.CategoryId, data.Context); err != nil {
@@ -128,13 +129,13 @@ func (a *Article) Put(ctx *gin.Context) {
 		return
 	}
 
-	if core.Conf.UseCategory {
+	if conf.Conf.UseCategory {
 		if data.CategoryId == 0 {
 			ctx.JSON(200, core.FailResult("category_id must exist"))
 			return
 		}
 	} else {
-		data.CategoryId = core.Conf.OtherCategoryId
+		data.CategoryId = conf.Conf.OtherCategoryId
 	}
 
 	if err := article.EditArticle(uint(id), data.CategoryId, data.Title, data.Tag, data.Context); err != nil {
