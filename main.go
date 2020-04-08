@@ -247,11 +247,14 @@ func installGoBlog() error {
 	fmt.Println("选择数据库驱动")
 	fmt.Println("1.mysql")
 	fmt.Println("2.postgreSQL")
+	fmt.Println("3.sqlite3")
 	fmt.Scanln(&tmp)
-	if tmp == "2" {
+	if tmp == "1" {
+		config.Db.Driver = "mysql"
+	} else if tmp == "2" {
 		config.Db.Driver = "postgres"
 	} else {
-		config.Db.Driver = "mysql"
+		config.Db.Driver = "sqlite3"
 	}
 	fmt.Println("数据库用户名(root)")
 	fmt.Scanln(&config.Db.Username)
