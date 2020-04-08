@@ -35,6 +35,7 @@ var (
 	port    = flag.Int("p", 8080, "port")
 	install = flag.Bool("i", false, "install goblog")
 	help    = flag.Bool("h", false, "help")
+	pidFile = flag.String("pid-file", "", "path to pid file")
 )
 
 func main() {
@@ -86,6 +87,9 @@ func main() {
 	{
 		pluginC := &controller.Plugin{}
 		apiRouter.GET("/plugin", pluginC.Gets)
+		apiRouter.GET("/plugin/hello/menu.js", func(ctx *gin.Context) {
+			ctx.File("plugin.js")
+		})
 	}
 
 	plugins.InitRouters(apiRouter)
@@ -104,7 +108,9 @@ func main() {
 		})
 	}
 
-	upg, err := tableflip.New(tableflip.Options{})
+	upg, err := tableflip.New(tableflip.Options{
+		PIDFile: *pidFile,
+	})
 	if err != nil {
 		log.Panicln(err)
 	}
@@ -112,9 +118,15 @@ func main() {
 
 	go func() {
 		sig := make(chan os.Signal, 1)
-		signal.Notify(sig, syscall.SIGHUP)
-		for range sig {
-			log.Println(upg.Upgrade())
+		signal.Notify(sig, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
+		for s := range sig {
+			switch s {
+			case syscall.SIGHUP:
+				log.Println(upg.Upgrade())
+			default:
+				os.Remove(*pidFile)
+				upg.Stop()
+			}
 		}
 	}()
 
