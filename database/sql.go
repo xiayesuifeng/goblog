@@ -22,6 +22,8 @@ func initDB() {
 	case "postgres":
 		args = fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s",
 			config.Address, config.Port, config.Dbname, config.Username, config.Password)
+	case "sqlite3":
+		args = fmt.Sprintf("%s/%s.db?_auth&_auth_user=%s&_auth_pass=%s", conf.Conf.DataDir, config.Dbname, config.Username, config.Password)
 	}
 
 	var err error
