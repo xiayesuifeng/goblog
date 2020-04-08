@@ -6,9 +6,9 @@ import (
 	"encoding/hex"
 	"flag"
 	"fmt"
+	"github.com/cloudflare/tableflip"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
-	"github.com/gin-gonic/autotls"
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/xiayesuifeng/goblog/article"
@@ -21,9 +21,12 @@ import (
 	_ "gitlab.com/xiayesuifeng/goblog/sql-driver"
 	"golang.org/x/crypto/acme/autocert"
 	"log"
+	"net/http"
 	"os"
+	"os/signal"
 	"strconv"
 	"strings"
+	"syscall"
 )
 
 var (
@@ -101,15 +104,60 @@ func main() {
 		})
 	}
 
+	upg, err := tableflip.New(tableflip.Options{})
+	if err != nil {
+		log.Panicln(err)
+	}
+	defer upg.Stop()
+
+	go func() {
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, syscall.SIGHUP)
+		for range sig {
+			log.Println(upg.Upgrade())
+		}
+	}()
+
+	address := ":http"
+	if !conf.Conf.Tls.Enable {
+		address = ":" + strconv.Itoa(*port)
+	}
+	ln, err := upg.Listen("tcp", address)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	defer ln.Close()
+
+	go router.RunListener(ln)
+
 	if conf.Conf.Tls.Enable {
-		log.Fatalln(autotls.RunWithManager(router, &autocert.Manager{
+		httpsLn, err := upg.Listen("tcp", ":https")
+		if err != nil {
+			log.Fatalln(err)
+		}
+		defer httpsLn.Close()
+
+		m := &autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist(conf.Conf.Tls.Domain...),
 			Cache:      autocert.DirCache(conf.Conf.DataDir + "/acme"),
-		}))
-	} else {
-		router.Run(":" + strconv.Itoa(*port))
+		}
+
+		s := &http.Server{
+			Addr:      ":https",
+			TLSConfig: m.TLSConfig(),
+			Handler:   router,
+		}
+
+		go s.ServeTLS(httpsLn, "", "")
 	}
+
+	if err := upg.Ready(); err != nil {
+		log.Panicln(err)
+	}
+
+	core.Upg = upg
+	<-upg.Exit()
 }
 
 func init() {
