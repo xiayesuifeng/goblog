@@ -32,14 +32,33 @@
 - [X] 删除分类
 - [X] 备份功能
 - [X] 还原功能
-- [ ] 插件管理中心
-- [X] 插件机制 (后端已实现)
+- [ ] 插件管理中心 (80%)
+- [X] 插件机制 (70%)
 
 ## 插件列表 ([插件手动安装教程](https://gitlab.com/xiayesuifeng/goblog-plugins/blob/master/README.md#%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8))
 - [X] 友链
 - [ ] 评论
 - [ ] 打赏 
 - [X] RSS订阅
+
+## 数据库支持
+
+- `MySQL`
+- `PortgreSQL`
+- `Sqlite3`
+- `SQL Server`
+
+其中 `Sqlite3` 与 `SQL Server` 不内置驱动，请自行导入驱动然后重新编译，导入驱动方法如下：
+
+修改 [sql-driver/driver.go](https://gitlab.com/xiayesuifeng/goblog/-/blob/master/sql-driver/driver.go)
+
+Sqlite3 在最后一行加入
+```import _ "github.com/jinzhu/gorm/dialects/sqlite"```
+
+而 `SQL Server` 则加入 
+```import _ "github.com/jinzhu/gorm/dialects/mssql"```
+
+最后根据 [编译安装](## 编译安装) 重新编译既可
 
 ## 快速部署
 
@@ -112,7 +131,7 @@ cp $(go env GOPATH)/src/gitlab.com/xiayesuifeng/goblog/config.json ./
   "useCategory": true,      //使用分类功能,不使用分类改为false
   "dataDir":"data",         //数据存放路径,当前为goblog运行路径下的data下，用于存储article和图片等
   "database":{              //数据库信息
-    "driver":"mysql",       //数据库驱动(支持mysql与portgres)
+    "driver":"mysql",       //数据库驱动(支持mysql, portgres, sqlite3, mssql(SQL Server))
     "username":"root",      //数据库用户名
     "password":"",          //数据库密码
     "dbname":"goblog",      //数据库名(需要手动创建)
@@ -127,15 +146,14 @@ cp $(go env GOPATH)/src/gitlab.com/xiayesuifeng/goblog/config.json ./
 }
 ```
 
-## 备份功能
-
+## 备份功能 (不支持 `SQL Server` 数据备份)
 为保证数据完整性，请确保 `goblog` 未在运行，然后使用 `-b` 参数进行启动，如
 ```bash
 ./goblog -b
 ```
 > 备份文件所在位置将在备份成功后提示
 
-## 恢复功能
+## 恢复功能 (不支持 `SQL Server` 数据恢复)
 
 为保证数据完整性，请确保 `goblog` 未在运行，然后
 1. 确保待恢复的数据库已存在，如不存在请自行去使用如 `CREATE DATABASE goblog` 这类的去创建
