@@ -58,7 +58,7 @@ Sqlite3 在最后一行加入
 而 `SQL Server` 则加入 
 ```import _ "github.com/jinzhu/gorm/dialects/mssql"```
 
-最后根据 [编译安装](## 编译安装) 重新编译既可
+最后根据 [编译安装](#编译安装) 重新编译既可
 
 ## 快速部署
 
