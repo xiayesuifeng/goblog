@@ -74,3 +74,11 @@ func (Plugin) Download(ctx *gin.Context) {
 	os.Remove("plugins/" + name + ".so.temp")
 	core.UpgraderGoBlog()
 }
+
+func (Plugin) Delete(ctx *gin.Context) {
+	name := ctx.Param("name")
+
+	os.Remove("plugins/" + name + ".so")
+	ctx.JSON(200, core.SuccessResult())
+	core.UpgraderGoBlog()
+}
