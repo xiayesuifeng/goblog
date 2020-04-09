@@ -87,6 +87,7 @@ func main() {
 	{
 		pluginC := &controller.Plugin{}
 		apiRouter.GET("/plugin", pluginC.Gets)
+		apiRouter.GET("/plugin/:name", loginMiddleware, pluginC.Download)
 	}
 
 	plugins.InitRouters(apiRouter)
