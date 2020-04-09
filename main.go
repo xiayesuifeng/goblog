@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/md5"
 	"crypto/sha1"
 	"encoding/hex"
@@ -27,6 +28,7 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+	"time"
 )
 
 var (
@@ -138,8 +140,13 @@ func main() {
 	}
 	defer ln.Close()
 
-	go router.RunListener(ln)
+	httpServer := &http.Server{
+		Handler: router,
+	}
 
+	go httpServer.Serve(ln)
+
+	var httpsServer *http.Server
 	if conf.Conf.Tls.Enable {
 		httpsLn, err := upg.Listen("tcp", ":https")
 		if err != nil {
@@ -153,13 +160,13 @@ func main() {
 			Cache:      autocert.DirCache(conf.Conf.DataDir + "/acme"),
 		}
 
-		s := &http.Server{
+		httpsServer = &http.Server{
 			Addr:      ":https",
 			TLSConfig: m.TLSConfig(),
 			Handler:   router,
 		}
 
-		go s.ServeTLS(httpsLn, "", "")
+		go httpsServer.ServeTLS(httpsLn, "", "")
 	}
 
 	if err := upg.Ready(); err != nil {
@@ -168,6 +175,19 @@ func main() {
 
 	core.Upg = upg
 	<-upg.Exit()
+
+	gracefulShutdown(httpServer, httpsServer)
+}
+
+func gracefulShutdown(server ...*http.Server) {
+	for _, s := range server {
+		if s == nil {
+			continue
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		s.Shutdown(ctx)
+	}
 }
 
 func init() {
