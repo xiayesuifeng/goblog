@@ -24,6 +24,8 @@ func initDB() {
 			config.Address, config.Port, config.Dbname, config.Username, config.Password)
 	case "sqlite3":
 		args = fmt.Sprintf("%s/%s.db?_auth&_auth_user=%s&_auth_pass=%s", conf.Conf.DataDir, config.Dbname, config.Username, config.Password)
+	case "mssql":
+		args = fmt.Sprintf("sqlserver://%s:%s@localhost:%s?database=%s", config.Username, config.Password, config.Port, config.Dbname)
 	}
 
 	var err error
