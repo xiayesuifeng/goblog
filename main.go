@@ -87,9 +87,6 @@ func main() {
 	{
 		pluginC := &controller.Plugin{}
 		apiRouter.GET("/plugin", pluginC.Gets)
-		apiRouter.GET("/plugin/hello/menu.js", func(ctx *gin.Context) {
-			ctx.File("plugin.js")
-		})
 	}
 
 	plugins.InitRouters(apiRouter)
