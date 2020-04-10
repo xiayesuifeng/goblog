@@ -37,6 +37,7 @@ var (
 	port    = flag.Int("p", 8080, "port")
 	install = flag.Bool("i", false, "install goblog")
 	help    = flag.Bool("h", false, "help")
+	config  = flag.String("c", "config.json", "Config file for goblog")
 	pidFile = flag.String("pid-file", "", "path to pid file")
 )
 
@@ -230,7 +231,7 @@ func init() {
 		}
 	}
 
-	err := conf.ParseConf("config.json")
+	err := conf.ParseConf(*config)
 	if err != nil {
 		if os.IsNotExist(err) {
 			log.Println("please config config.json")
