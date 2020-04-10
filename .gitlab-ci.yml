@@ -33,16 +33,19 @@ cache-mod:
 build-goblog:
   stage: build
   script:
-    - go build
-    - mkdir -p $CI_PROJECT_DIR/build
-    - cp goblog $CI_PROJECT_DIR/build
+    - mkdir -p $CI_PROJECT_DIR/goblog
+    - go build -o $CI_PROJECT_DIR/goblog/goblog
+    - cp config.default.json $CI_PROJECT_DIR/goblog
+    - wget https://gitlab.com/xiayesuifeng/goblog-web/builds/artifacts/master/download?job=build-web -O web.zip
+    - unzip web.zip
+    - mv build $CI_PROJECT_DIR/goblog/web
 
   only:
     - tags
 
   artifacts:
     paths:
-      - $CI_PROJECT_DIR/build/goblog
+      - $CI_PROJECT_DIR/goblog
 
 build-plugins:
   stage: build
