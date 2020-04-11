@@ -32,13 +32,15 @@ import (
 )
 
 var (
-	backup  = flag.Bool("b", false, "backup goblog")
-	restore = flag.String("r", "", "restore goblog backup file")
-	port    = flag.Int("p", 8080, "port")
-	install = flag.Bool("i", false, "install goblog")
-	help    = flag.Bool("h", false, "help")
-	config  = flag.String("c", "config.json", "Config file for goblog")
-	pidFile = flag.String("pid-file", "", "path to pid file")
+	backup      = flag.Bool("b", false, "backup goblog")
+	restore     = flag.String("r", "", "restore goblog backup file")
+	port        = flag.Int("p", 8080, "port")
+	install     = flag.Bool("i", false, "install goblog")
+	help        = flag.Bool("h", false, "help")
+	config      = flag.String("c", "config.json", "Config file for goblog")
+	pidFile     = flag.String("pid-file", "", "path to pid file")
+	useHttpPort = flag.Bool("autotls-use-custom-http-port", false,
+		"Allow http port to be specified with -p when autotls is enabled")
 )
 
 func main() {
@@ -132,9 +134,9 @@ func main() {
 		}
 	}()
 
-	address := ":http"
-	if !conf.Conf.Tls.Enable {
-		address = ":" + strconv.Itoa(*port)
+	address := ":" + strconv.Itoa(*port)
+	if conf.Conf.Tls.Enable && !*useHttpPort {
+		address = ":http"
 	}
 	ln, err := upg.Listen("tcp", address)
 	if err != nil {
