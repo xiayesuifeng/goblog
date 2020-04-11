@@ -102,6 +102,7 @@ your {
         to {path} {path} /
     }
     proxy /api localhost:20181 {
+        websocket
         transparent
     }
 }
