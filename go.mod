@@ -14,7 +14,7 @@ require (
 	github.com/satori/go.uuid v1.2.1-0.20181016184021-8ccf5352a842
 	gitlab.com/xiayesuifeng/goblog/conf v0.0.0-20200409174536-bd13490867bd
 	gitlab.com/xiayesuifeng/goblog/database v0.0.0-20200409174536-bd13490867bd
-	gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200409174536-bd13490867bd
+	gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200411064256-3a44ccbca445
 	golang.org/x/crypto v0.0.0-20191205180655-e7c4368fe9dd
 	golang.org/x/sys v0.0.0-20200321134203-328b4cd54aae // indirect
 )

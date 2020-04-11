@@ -234,6 +234,10 @@ gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200408112224-e865f28a2d52 h1:MTX
 gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200408112224-e865f28a2d52/go.mod h1:aqttBEzna4XwfgT4Yhm36qVnpeR9tzA4QPc4otgsuBE=
 gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200409174536-bd13490867bd h1:ODgdX3xE1M+1ERxLd/rxLV0VMZwmL3BeBsOtLwQiIj4=
 gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200409174536-bd13490867bd/go.mod h1:aqttBEzna4XwfgT4Yhm36qVnpeR9tzA4QPc4otgsuBE=
+gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200409180516-87b219efe5f0 h1:4uqsx0ckM24w+ac5XO0p0/49LfJVsQxyQQU0LvcE7mA=
+gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200409180516-87b219efe5f0/go.mod h1:aqttBEzna4XwfgT4Yhm36qVnpeR9tzA4QPc4otgsuBE=
+gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200411064256-3a44ccbca445 h1:/bIB+kSTVARNmdD2TRIG7yeEwyAlOAICiev2AD1B2bs=
+gitlab.com/xiayesuifeng/goblog/plugins v0.0.0-20200411064256-3a44ccbca445/go.mod h1:xcEGgykJlVFjbunaaIEKo0FXpxahNf0QYPPqrZfTZN8=
 go.opencensus.io v0.20.1/go.mod h1:6WKK9ahsWS3RSO+PY9ZHZUfv2irvY6gN279GOPZjmmk=
 golang.org/x/crypto v0.0.0-20180904163835-0709b304e793/go.mod h1:6SG95UA2DQfeDnfUPMdvaQW0Q7yPrPDi9nlGo2tz2b4=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=

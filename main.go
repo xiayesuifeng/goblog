@@ -18,7 +18,7 @@ import (
 	"gitlab.com/xiayesuifeng/goblog/controller"
 	"gitlab.com/xiayesuifeng/goblog/core"
 	"gitlab.com/xiayesuifeng/goblog/database"
-	"gitlab.com/xiayesuifeng/goblog/plugins"
+	"gitlab.com/xiayesuifeng/goblog/plugin"
 	_ "gitlab.com/xiayesuifeng/goblog/sql-driver"
 	"golang.org/x/crypto/acme/autocert"
 	"log"
@@ -94,7 +94,7 @@ func main() {
 		apiRouter.DELETE("/plugin/:name", loginMiddleware, pluginC.Delete)
 	}
 
-	plugins.InitRouters(apiRouter)
+	plugin.InitRouters(apiRouter)
 
 	webPath := os.Getenv("GOBLOG_WEB_PATH")
 	if webPath != "" {
@@ -289,8 +289,8 @@ func init() {
 		conf.Conf.OtherCategoryId = tmp.ID
 	}
 
-	plugins.InitPlugins(loginMiddleware)
-	plugins.InitDatabases()
+	plugin.InitPlugins(loginMiddleware)
+	plugin.InitDatabases()
 }
 
 func loginMiddleware(ctx *gin.Context) {
