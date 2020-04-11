@@ -4,7 +4,7 @@ variables:
   GOPATH: $CI_PROJECT_DIR/go
 
 before_script:
-  - pacman -Sy --noconfirm base-devel go
+  - pacman -Sy --noconfirm base-devel go wget unzip
   - mkdir $CI_PROJECT_DIR/src
   - shopt -s extglob
   - mv !(src|go) $CI_PROJECT_DIR/src
@@ -14,6 +14,7 @@ stages:
   - cache-mod
   - test
   - build
+  - build-plugins
 
 cache:
   key: $CI_COMMIT_SHA
@@ -48,7 +49,7 @@ build-goblog:
       - $CI_PROJECT_DIR/goblog
 
 build-plugins:
-  stage: build
+  stage: build-plugins
   trigger: xiayesuifeng/goblog-plugins
 
   only:
