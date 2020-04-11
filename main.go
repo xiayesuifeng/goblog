@@ -264,6 +264,10 @@ func init() {
 		os.MkdirAll(conf.Conf.DataDir+"/assets", 0755)
 	}
 
+	if _, err := os.Stat(conf.Conf.DataDir + "/plugins"); os.IsNotExist(err) {
+		os.MkdirAll(conf.Conf.DataDir+"/plugins", 0755)
+	}
+
 	if *backup {
 		if err := core.Backup(); err != nil {
 			log.Println(err)

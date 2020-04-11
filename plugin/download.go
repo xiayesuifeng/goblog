@@ -3,6 +3,7 @@ package plugin
 import (
 	"errors"
 	"fmt"
+	"gitlab.com/xiayesuifeng/goblog/conf"
 	"io"
 	"net/http"
 	"os"
@@ -25,7 +26,7 @@ func (d *DownloadProgress) Write(p []byte) (int, error) {
 
 func DownloadPlugin(name string, status chan string) error {
 	name += ".so"
-	file := "plugins/" + name
+	file := conf.Conf.DataDir + "/plugins/" + name
 
 	status <- "正在连接"
 

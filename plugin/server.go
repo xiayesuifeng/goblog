@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"gitlab.com/xiayesuifeng/goblog/conf"
 	"io/ioutil"
 	"strings"
 )
@@ -20,7 +21,7 @@ type Plugin struct {
 func GetPlugins() []Plugin {
 	list := make([]Plugin, 0)
 
-	file, err := ioutil.ReadDir("plugins")
+	file, err := ioutil.ReadDir(conf.Conf.DataDir + "/plugins")
 	if err != nil {
 		return list
 	}

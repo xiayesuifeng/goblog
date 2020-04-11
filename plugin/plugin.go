@@ -31,7 +31,7 @@ func InitPlugins(loginMiddleware func(ctx *gin.Context)) {
 	pluginServer.LoginMiddleware = loginMiddleware
 	pluginServer.DatabaseInstance = database.Instance
 
-	file, err := ioutil.ReadDir("plugins")
+	file, err := ioutil.ReadDir(conf.Conf.DataDir + "/plugins")
 	if err != nil {
 		if os.IsNotExist(err) {
 			log.Println("[Plugins] plugins directory not exist, skip plugin loading")
@@ -79,7 +79,7 @@ func InitRouters(router *gin.RouterGroup) {
 }
 
 func registerPlugin(name string) error {
-	p, err := plugin.Open("plugins/" + name + ".so")
+	p, err := plugin.Open(conf.Conf.DataDir + "/plugins/" + name + ".so")
 	if err != nil {
 		return err
 	}
