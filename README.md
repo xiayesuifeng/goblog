@@ -32,12 +32,15 @@
 - [X] 删除分类
 - [X] 备份功能
 - [X] 还原功能
-- [ ] 插件管理中心 (80%)
-- [X] 插件机制 (70%)
+- [X] 插件管理中心
+- [X] 插件机制
 
-## 插件列表 ([插件手动安装教程](https://gitlab.com/xiayesuifeng/goblog-plugins/blob/master/README.md#%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8))
+## 插件列表
+> 插件可通过登录后在后台的插件中心中安装，也可以 [手动安装](https://gitlab.com/xiayesuifeng/goblog-plugins/blob/master/README.md#%E6%8F%92%E4%BB%B6%E5%88%97%E8%A1%A8)
+> 注：插件只支持 linux-amd64 ，其他平台请自行编译
+
 - [X] 友链
-- [ ] 评论
+- [X] 评论
 - [ ] 打赏 
 - [X] RSS订阅
 
@@ -64,13 +67,18 @@ Sqlite3 在最后一行加入
 
 > 下载
 ```
-wget https://gitlab.com/xiayesuifeng/goblog-web/builds/artifacts/master/download?job=build-web -O web.zip
-unzip web.zip
-wget https://gitlab.com/xiayesuifeng/goblog/builds/artifacts/2.3.0/download?job=build-goblog -O goblog.zip
+wget https://gitlab.com/xiayesuifeng/goblog/builds/artifacts/2.4.0/download?job=build-goblog -O goblog.zip
 unzip goblog.zip
-mv build/goblog ./
+cd goblog
 ```
 > 配置
+
+方法一（推荐）
+
+根据 [配置](#配置) 进行手动配置
+
+方法二
+
 ```
 # 生成配置文件(数据库自行创建)
 ./goblog -i
@@ -86,7 +94,7 @@ mv build/goblog ./
 
 ```
 your {
-    root /your/path/goblog-web
+    root /your/path/goblog/web
     gzip
     
     rewrite {
@@ -112,13 +120,13 @@ npm build
 > 后端
 ```
 go get gitlab.com/xiayesuifeng/goblog
-go build -ldflags "-s -w" gitlab.com/xiayesuifeng/goblog
+go build -ldflags "-s -w" -trimpath gitlab.com/xiayesuifeng/goblog
 ```
 
 ### 配置
 
 ```bash
-cp $(go env GOPATH)/src/gitlab.com/xiayesuifeng/goblog/config.json ./
+cp config.default.json config.json
 ```
 
 > config.json详解
@@ -142,9 +150,35 @@ cp $(go env GOPATH)/src/gitlab.com/xiayesuifeng/goblog/config.json ./
     "username":"",
     "password": "",
     "host": ""
+  },
+  "tls": {                    // autotls 配置，可不需要任何 web 服务器直接运行并支持 HTTPS (证书自动申请)
+    "enable": false,          // 启用 autotls
+    "domain": ["example.com"] // 绑定的域名
   }
 }
 ```
+
+## 裸奔功能 (无需 web 服务器直接监听80与443，自动申请证书)
+1. 修改配置文件中的 tls 下的 enable 为 true，如
+```json
+"tls": {
+    "enable": true,
+    "domain": ["example.com"]
+}
+```
+2. 修改 domain 中的 `example.con` 为你自己的域名（支持绑定多个），如
+```json
+"tls": {
+    "enable": true,
+    "domain": ["example1.com","example2.com"]
+}
+```
+3. 设置 `GOBLOG_WEB_PATH` 变量为前端所在路径，然后启动 `goblog`，如
+```
+env GOBLOG_WEB_PATH=./web ./goblog
+```
+
+> 注：如果需要修改 http 监听端口，可添加 `-autotls-use-custom-http-port` 启动，然后配合 `-p` 参数指定想要的端口既可
 
 ## 备份功能 (不支持 `SQL Server` 数据备份)
 为保证数据完整性，请确保 `goblog` 未在运行，然后使用 `-b` 参数进行启动，如
@@ -168,6 +202,17 @@ cp $(go env GOPATH)/src/gitlab.com/xiayesuifeng/goblog/config.json ./
 
 ```
 echo -n yourpassword | openssl dgst -md5 -binary | openssl dgst -sha1
+```
+
+## 配合 `systemd` 使用
+```
+[Unit]
+Description=GoBlog Service
+
+[Service]
+ExecStart=/path/to/goblog -pid-file /tmp/goblog.pid
+ExecReload=/bin/kill -HUP $MAINPID
+PIDFile=/tmp/goblog.pid
 ```
 
 ## License
