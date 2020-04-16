@@ -55,7 +55,7 @@
 
 修改 [sql-driver/driver.go](https://gitlab.com/xiayesuifeng/goblog/-/blob/master/sql-driver/driver.go)
 
-Sqlite3 在最后一行加入
+`Sqlite3` 在最后一行加入
 ```import _ "github.com/jinzhu/gorm/dialects/sqlite"```
 
 而 `SQL Server` 则加入 
@@ -67,7 +67,7 @@ Sqlite3 在最后一行加入
 
 > 下载
 ```
-wget https://gitlab.com/xiayesuifeng/goblog/builds/artifacts/2.4.0/download?job=build-goblog -O goblog.zip
+wget https://gitlab.com/xiayesuifeng/goblog/-/jobs/artifacts/2.4.0/download?job=build-goblog -O goblog.zip
 unzip goblog.zip
 cd goblog
 ```
