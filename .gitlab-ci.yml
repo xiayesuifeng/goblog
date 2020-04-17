@@ -4,7 +4,7 @@ variables:
   GOPATH: $CI_PROJECT_DIR/go
 
 before_script:
-  - pacman -Sy --noconfirm base-devel go wget unzip
+  - pacman -Sy --noconfirm base-devel go wget unzip docker
   - mkdir $CI_PROJECT_DIR/src
   - shopt -s extglob
   - mv !(src|go) $CI_PROJECT_DIR/src
@@ -32,6 +32,14 @@ cache-mod:
     - tags
 
 build-docker:
+  services:
+    - docker:dind
+
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2376
+
   stage: build
   script:
     - mkdir -p $CI_PROJECT_DIR/goblog
