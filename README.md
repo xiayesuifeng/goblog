@@ -67,7 +67,7 @@
 
 > 下载
 ```
-wget https://gitlab.com/xiayesuifeng/goblog/-/jobs/artifacts/2.4.0/download?job=build-goblog -O goblog.zip
+wget https://gitlab.com/xiayesuifeng/goblog/-/jobs/artifacts/2.4.1/download?job=build-goblog -O goblog.zip
 unzip goblog.zip
 cd goblog
 ```
@@ -116,7 +116,7 @@ your {
 git clone https://gitlab.com/xiayesuifeng/goblog-web.git goblog
 cd goblog
 npm install
-npm build
+npm run build
 ```
 > 后端
 ```
