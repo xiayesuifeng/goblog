@@ -38,7 +38,6 @@ build-docker:
   variables:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: tcp://docker:2376
 
   stage: build
   script:
