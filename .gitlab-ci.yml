@@ -4,7 +4,7 @@ variables:
   GOPATH: $CI_PROJECT_DIR/go
 
 before_script:
-  - pacman -Sy --noconfirm base-devel go wget unzip
+  - pacman -Sy --noconfirm base-devel go wget unzip docker
   - mkdir $CI_PROJECT_DIR/src
   - shopt -s extglob
   - mv !(src|go) $CI_PROJECT_DIR/src
@@ -31,6 +31,34 @@ cache-mod:
   only:
     - tags
 
+build-docker:
+  services:
+    - docker:dind
+
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_HOST: tcp://docker:2375
+
+  stage: build
+  script:
+    - mkdir -p $CI_PROJECT_DIR/goblog
+    - echo 'import _ "github.com/jinzhu/gorm/dialects/sqlite"' >> sql-driver/driver.go
+    - go build -ldflags "-s -w" -trimpath -o $CI_PROJECT_DIR/goblog/goblog
+    - cp config.default.json $CI_PROJECT_DIR/goblog/config.json
+    - sed 's|mysql|sqlite3|g' -i $CI_PROJECT_DIR/goblog/config.json
+    - sed 's|"password":""|"password":"123"|g' -i $CI_PROJECT_DIR/goblog/config.json
+    - wget https://gitlab.com/xiayesuifeng/goblog-web/builds/artifacts/master/download?job=build-web -O web.zip
+    - unzip web.zip
+    - mv build $CI_PROJECT_DIR/goblog/web
+    - cp Dockerfile $CI_PROJECT_DIR
+    - cd $CI_PROJECT_DIR
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/xiayesuifeng/goblog:latest .
+    - docker push registry.gitlab.com/xiayesuifeng/goblog:latest
+
+  only:
+    - tags
+    
 build-goblog:
   stage: build
   script:
