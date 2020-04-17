@@ -7,8 +7,11 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/satori/go.uuid"
+	"gitlab.com/xiayesuifeng/goblog/article"
+	"gitlab.com/xiayesuifeng/goblog/category"
 	"gitlab.com/xiayesuifeng/goblog/conf"
 	"gitlab.com/xiayesuifeng/goblog/core"
+	"gitlab.com/xiayesuifeng/goblog/database"
 	"io"
 	"os"
 )
@@ -91,6 +94,20 @@ func (a *Admin) PatchInfo(ctx *gin.Context) {
 
 		if data.UseCategory != nil {
 			conf.Conf.UseCategory = *data.UseCategory
+			if !conf.Conf.UseCategory {
+				db := database.Instance()
+
+				tmp := category.Category{Name: "other"}
+				if db.Where(&tmp).First(&tmp).RecordNotFound() {
+					if err := db.Create(&tmp).Error; err != nil {
+						ctx.JSON(200, core.FailResult(err.Error()))
+						return
+					}
+				}
+
+				db.Model(&article.Article{}).Updates(article.Article{CategoryId: tmp.ID})
+				conf.Conf.OtherCategoryId = tmp.ID
+			}
 		}
 
 		if err := conf.SaveConf(); err != nil {
