@@ -17,7 +17,7 @@ type Article struct {
 	Tag        string `json:"tag" binding:"required"`
 	Uuid       string
 	CategoryId uint `json:"category_id"`
-	Private    bool `json:"private"`
+	Private    bool `gorm:"default:0" json:"private"`
 }
 
 func AddArticle(title, tag string, categoryId uint, private bool, context string) error {
