@@ -105,7 +105,7 @@ func (a *Article) Post(ctx *gin.Context) {
 		data.CategoryId = conf.Conf.OtherCategoryId
 	}
 
-	if err := article.AddArticle(data.Title, data.Tag, data.CategoryId, data.Context); err != nil {
+	if err := article.AddArticle(data.Title, data.Tag, data.CategoryId, data.Private, data.Context); err != nil {
 		ctx.JSON(200, core.FailResult(err.Error()))
 	} else {
 		ctx.JSON(200, core.SuccessResult())
@@ -138,7 +138,7 @@ func (a *Article) Put(ctx *gin.Context) {
 		data.CategoryId = conf.Conf.OtherCategoryId
 	}
 
-	if err := article.EditArticle(uint(id), data.CategoryId, data.Title, data.Tag, data.Context); err != nil {
+	if err := article.EditArticle(uint(id), data.CategoryId, data.Title, data.Tag, data.Context, data.Private); err != nil {
 		ctx.JSON(200, core.FailResult(err.Error()))
 	} else {
 		ctx.JSON(200, core.SuccessResult())
