@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/russross/blackfriday"
 	"gitlab.com/xiayesuifeng/goblog/article"
@@ -25,6 +26,10 @@ func (a *Article) Get(ctx *gin.Context) {
 	db := database.Instance()
 	article := article.Article{}
 
+	if !a.getLogin(ctx) {
+		db = db.Where("private = 0")
+	}
+
 	db.First(&article, id)
 
 	ctx.JSON(200, core.SuccessDataResult("article", article))
@@ -40,6 +45,10 @@ func (a *Article) GetByCategory(ctx *gin.Context) {
 
 	db := database.Instance()
 	articles := make([]article.Article, 0)
+
+	if !a.getLogin(ctx) {
+		db = db.Where("private = 0")
+	}
 
 	db.Where("category_id = ?", id).Order("created_at DESC").Find(&articles)
 
@@ -80,7 +89,13 @@ func (a *Article) GetByUuid(ctx *gin.Context) {
 func (a *Article) Gets(ctx *gin.Context) {
 	articles := make([]article.Article, 0)
 	db := database.Instance()
-	db.Order("created_at DESC").Find(&articles)
+	db = db.Order("created_at DESC")
+
+	if !a.getLogin(ctx) {
+		db = db.Where("private = 0")
+	}
+
+	db.Find(&articles)
 
 	ctx.JSON(200, core.SuccessDataResult("articles", articles))
 }
@@ -158,4 +173,11 @@ func (a *Article) Delete(ctx *gin.Context) {
 	} else {
 		ctx.JSON(200, core.SuccessResult())
 	}
+}
+
+func (a *Article) getLogin(ctx *gin.Context) bool {
+	session := sessions.Default(ctx)
+
+	login := session.Get("login")
+	return login != nil
 }
