@@ -214,6 +214,9 @@ Description=GoBlog Service
 ExecStart=/path/to/goblog -pid-file /tmp/goblog.pid
 ExecReload=/bin/kill -HUP $MAINPID
 PIDFile=/tmp/goblog.pid
+
+[Install]
+WantedBy=multi-user.target
 ```
 
 ## License
