@@ -58,6 +58,15 @@ func (a *Article) GetByUuid(ctx *gin.Context) {
 	uuid := ctx.Param("uuid")
 	mode := ctx.Param("mode")
 
+	if !a.getLogin(ctx) {
+		db := database.Instance()
+
+		if db.Where("private = 0 AND uuid = ?", uuid).First(&article.Article{}).RecordNotFound() {
+			ctx.JSON(200, core.FailResult("uuid not found"))
+			return
+		}
+	}
+
 	md, err := ioutil.ReadFile("data/article/" + uuid + ".md")
 	if err != nil {
 		ctx.JSON(200, core.FailResult("uuid not found"))
