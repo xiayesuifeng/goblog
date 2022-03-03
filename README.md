@@ -67,7 +67,7 @@
 
 > 下载
 ```
-wget https://gitlab.com/xiayesuifeng/goblog/-/jobs/artifacts/2.4.2/download?job=build-goblog -O goblog.zip
+wget https://gitlab.com/xiayesuifeng/goblog/-/jobs/artifacts/2.4.3/download?job=build-goblog -O goblog.zip
 unzip goblog.zip
 cd goblog
 ```
