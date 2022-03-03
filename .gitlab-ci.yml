@@ -1,10 +1,10 @@
-image: archlinux/base
+image: archlinux/archlinux:base-devel
 
 variables:
   GOPATH: $CI_PROJECT_DIR/go
 
 before_script:
-  - pacman -Sy --noconfirm base-devel go wget unzip docker
+  - pacman -Sy --noconfirm go wget unzip docker
   - mkdir $CI_PROJECT_DIR/src
   - shopt -s extglob
   - mv !(src|go) $CI_PROJECT_DIR/src
