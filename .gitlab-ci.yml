@@ -43,6 +43,7 @@ build-docker:
   script:
     - mkdir -p $CI_PROJECT_DIR/goblog
     - echo 'import _ "github.com/jinzhu/gorm/dialects/sqlite"' >> sql-driver/driver.go
+    - go mod tidy
     - go build -ldflags "-s -w" -trimpath -o $CI_PROJECT_DIR/goblog/goblog
     - cp config.default.json $CI_PROJECT_DIR/goblog/config.json
     - sed 's|mysql|sqlite3|g' -i $CI_PROJECT_DIR/goblog/config.json
