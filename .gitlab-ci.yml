@@ -31,6 +31,23 @@ cache-mod:
   only:
     - tags
 
+build-goblog:
+  stage: build
+  script:
+    - mkdir -p $CI_PROJECT_DIR/goblog
+    - go build -ldflags "-s -w" -trimpath -o $CI_PROJECT_DIR/goblog/goblog
+    - cp config.default.json $CI_PROJECT_DIR/goblog
+    - wget https://gitlab.com/xiayesuifeng/goblog-web/builds/artifacts/master/download?job=build-web -O web.zip
+    - unzip web.zip
+    - mv build $CI_PROJECT_DIR/goblog/web
+
+  only:
+    - tags
+
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/goblog
+
 build-docker:
   services:
     - docker:dind
@@ -59,23 +76,6 @@ build-docker:
 
   only:
     - tags
-    
-build-goblog:
-  stage: build
-  script:
-    - mkdir -p $CI_PROJECT_DIR/goblog
-    - go build -ldflags "-s -w" -trimpath -o $CI_PROJECT_DIR/goblog/goblog
-    - cp config.default.json $CI_PROJECT_DIR/goblog
-    - wget https://gitlab.com/xiayesuifeng/goblog-web/builds/artifacts/master/download?job=build-web -O web.zip
-    - unzip web.zip
-    - mv build $CI_PROJECT_DIR/goblog/web
-
-  only:
-    - tags
-
-  artifacts:
-    paths:
-      - $CI_PROJECT_DIR/goblog
 
 build-plugins:
   stage: build-plugins
