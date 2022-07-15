@@ -54,7 +54,12 @@ func EditArticle(id, categoryId uint, title, tag, context string, private bool) 
 		return err
 	}
 
-	return db.Model(&article).Updates(Article{CategoryId: categoryId, Title: title, Tag: tag, Private: private}).Error
+	return db.Model(&article).Updates(map[string]interface{}{
+		"category_id": categoryId,
+		"title": title,
+		"tag": tag,
+		"private": private,
+	}).Error
 }
 
 func DeleteArticle(id int) error {
