@@ -7,5 +7,5 @@ require (
 	github.com/golang/protobuf v1.3.5 // indirect
 	github.com/jinzhu/gorm v1.9.12
 	gitlab.com/xiayesuifeng/goblog/conf v0.0.0-20200409174536-bd13490867bd
-	golang.org/x/sys v0.0.0-20200321134203-328b4cd54aae // indirect
+	golang.org/x/sys v0.1.0 // indirect
 )
