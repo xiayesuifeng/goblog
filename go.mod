@@ -34,7 +34,7 @@ require (
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	golang.org/x/net v0.0.0-20190404232315-eb5bcb51f2a3 // indirect
-	golang.org/x/sys v0.0.0-20200321134203-328b4cd54aae // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.3.2 // indirect
 	google.golang.org/appengine v1.4.0 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
